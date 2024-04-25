@@ -8,97 +8,16 @@ const express = require('express'),
 const app = express();
 app.use(bodyParser.json()); // To read body information
 
-let users = [
-  {
-    id: 1,
-    name: 'Jojo Muster',
-    email: 'j.muster@gmail.com',
-    favoriteMovies: ['In The Mood for Love', 'The Man Without a Past'],
-  },
-  {
-    id: 2,
-    name: 'Tobsen Muster',
-    email: 't.muster@gmail.com',
-    favoriteMovies: ['Dead Man'],
-  },
-];
-
-// create Movie Database
-let movies = [
-  {
-    Title: 'Dead Man',
-    'Release-year': 1995,
-    Director: {
-      Name: 'Jim Jarmusch',
-      Birth: 1953,
-      Death: '-',
-      Bio: 'Moved to New York City at the age of seventeen from Akron, Ohio. Graduated from Columbia University with a B.A. in English, class of 1975. Without any prior film experience, he was accepted into the Tisch School of the Arts, New York.',
-    },
-    Genre: {
-      Name: 'Western',
-      Description:
-        'Should contain numerous scenes and/or a narrative where the portrayal is similar to that of frontier life in the American West during 1600s to contemporary times.',
-    },
-  },
-  {
-    Title: 'In the Mood for Love',
-    'Release-year': 1995,
-    Director: {
-      Name: 'Wong Kar-Wai',
-      Birth: 1956,
-      Death: '-',
-      Bio: `Wong Kar-wai (born 17 July 1956) is a Hong Kong Second Wave filmmaker, internationally renowned as an auteur for his visually unique, highly stylised, emotionally resonant work, including Ah fei zing zyun (1990), Dung che sai duk (1994), Chung Hing sam lam (1994), Do lok tin si (1995), Chun gwong cha sit (1997), 2046 (2004) and My Blueberry Nights (2007), Yi dai zong shi (2013). His film Fa yeung nin wa (2000), starring Maggie Cheung and Tony Leung, garnered widespread critical acclaim. Wong's films frequently feature protagonists who yearn for romance in the midst of a knowingly brief life and scenes that can often be described as sketchy, digressive, exhilarating, and containing vivid imagery. Wong was the first Chinese director to win the Best Director Award of Cannes Film Festival (for his work Chun gwong cha sit in 1997). Wong was the President of the Jury at the 2006 Cannes Film Festival, which makes him the only Chinese person to preside over the jury at the Cannes Film Festival. He was also the President of the Jury at the 63rd Berlin International Film Festival in February 2013. In 2006, Wong accepted the National Order of the Legion of Honour: Knight (Highest Degree) from the French Government. In 2013, Wong accepted Order of Arts and Letters: Commander (Highest Degree) by the French Minister of Culture.`,
-    },
-    Genre: {
-      Name: 'Drama',
-      Description:
-        'Should contain numerous consecutive scenes of characters portrayed to effect a serious narrative throughout the title, usually involving conflicts and emotions. This can be exaggerated upon to produce melodrama. Subjective.',
-    },
-  },
-  {
-    Title: 'The Man Without a Past',
-    'Release-year': 2002,
-    Director: {
-      Name: 'Aki Kaurismäki',
-      Birth: 1957,
-      Death: '-',
-      Bio: `Aki Kaurismäki did a wide variety of jobs including postman, dish-washer and film critic, before forming a production and distribution company, Villealfa (in homage to Jean-Luc Godard's Alphaville (1965)) with his older brother Mika Kaurismäki, also a film-maker. Both Aki and Mika are prolific film-makers, and together have been responsible for one-fifth of the total output of the Finnish film industry since the early 1980s, though Aki's work has found more favour abroad. His films are very short (he says a film should never run longer than 90 minutes, and many of his films are nearer 70), eccentric parodies of various genres (road movies, film noir, rock musicals), populated by lugubrious hard-drinking Finns and set to eclectic soundtracks, typically based around '50s rock'n'roll.`,
-    },
-    Genre: {
-      Name: 'Drama',
-      Description:
-        'Should contain numerous consecutive scenes of characters portrayed to effect a serious narrative throughout the title, usually involving conflicts and emotions. This can be exaggerated upon to produce melodrama. Subjective.',
-    },
-  },
-  {
-    Title: 'A Clockwork Orange',
-    Director: 'Stanley Kubrick',
-  },
-  {
-    Title: 'The Big Lebowski',
-    Director: 'Joel Coen & Ethan Coen',
-  },
-  {
-    Title: "Adam's Apples",
-    Director: 'Joel Coen & Ethan Coen',
-  },
-  {
-    Title: '2046',
-    Director: 'Kar-Wai Wong',
-  },
-  {
-    Title: 'Down by Law',
-    Director: 'Jim Jarmusch',
-  },
-  {
-    Title: 'The Wolf of Wall Street',
-    Director: 'Martin Scorsese',
-  },
-  {
-    Title: 'Another Round',
-    Director: 'Thomas Vinterberg',
-  },
-];
+// Integration von Mongoose in die REST-API
+const mongoose = require('mongoose'); // Mongoose package
+const Models = require('./models.js'); // Mongoose-Models definded in models.js
+const Movies = Models.Movie; // Model name defined in models.js
+const Users = Models.User; // Model name defined in models.js
+// allows Mongoose to connect to the database to perform CRUD operations on the containing documents
+mongoose.connect('mongodb://localhost:27017/kraftFlixDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // createWriteStream() = fs function fo create a write stream (in append mode)
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
@@ -118,36 +37,67 @@ app.use(
 // *****************************************************************************************************
 // CREATE / POST requests
 // *****************************************************************************************************
-// Create new user
-app.post('/users', (req, res) => {
-  const newUser = req.body;
-  if (newUser.name) {
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).json(newUser);
-  } else {
-    res.status(400).send('user needs name');
-  }
+
+// CREATE new USER
+// We’ll expect JSON in this format
+// { ID: Integer, Username: String, Password: String, Email: String, Birthday: Date }
+
+app.post('/users', async (req, res) => {
+  await Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + ' already exists');
+      } else {
+        Users.create({
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthdate: req.body.Birthdate,
+        })
+          .then((user) => {
+            res.status(201).json(user);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+          });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Add Movie to FavoriteMovies
+app.post('/users/:Username/movies/:MovieID', (req, res) => {
+  const { Username, MovieID } = req.params;
 
-// Create Favorite Movie List & Adding Title
-app.post('/users/:id/:movieTitle', (req, res) => {
-  const { id, movieTitle } = req.params;
-
-  let user = users.find((user) => user.id == id);
-
-  if (user) {
-    user.favoriteMovies.push(movieTitle);
-    res.status(200).send(
-      `"${movieTitle}" has been added to ${
-        user.name
-      }'s favorite movies. \n Updated favorite movies array: 
-        ${JSON.stringify(user.favoriteMovies)}.`
-    );
-  } else {
-    res.status(400).send('could not update favorite movies');
-  }
-  console.log(JSON.stringify(user.favoriteMovies));
+  Users.findOne({ Username })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send('User not found');
+      }
+      return Users.findOneAndUpdate(
+        { Username },
+        { $addToSet: { FavoriteMovies: MovieID } },
+        { new: true }
+      );
+    })
+    .then((updatedUser) => {
+      res
+        .status(200)
+        .send(
+          `New Favorite Movie ${MovieID} was added. \n Updated Favorite Movies of ${updatedUser.Username}:\n[ ${updatedUser.FavoriteMovies} ]`
+        );
+    })
+    // .then((updatedUser) => {
+    //   res.status(200).json(updatedUser);
+    // })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 // *****************************************************************************************************
@@ -157,112 +107,183 @@ app.post('/users/:id/:movieTitle', (req, res) => {
 app.get('/', (req, res) => {
   res.send('Welcome to my kraftFlix app!');
 });
-// USERS LIST
-app.get('/users', (req, res) => {
-  res.status(200).json(users);
+
+// All USERS
+app.get('/users', async (req, res) => {
+  await Users.find()
+    .then((users) => {
+      res.status(201).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
-// MOVIE LIST
-app.get('/movies', (req, res) => {
-  res.status(200).json(movies);
-  console.log(__dirname);
+
+// USER by USERNAME
+app.get('/users/:Username', async (req, res) => {
+  await Users.findOne({ Username: req.params.Username })
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
+
+// All MOVIES
+app.get('/movies', async (req, res) => {
+  await Movies.find()
+    .then((movies) => {
+      res.status(200).json(movies);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send('Error. ' + err);
+    });
+});
+
 // MOVIE by TITLE
-app.get('/movies/:title', (req, res) => {
-  // const title = req.params.title;
-  const { title } = req.params; // Object destructuring andere Schreibweise von "const title = req.params.title;"
-  const movie = movies.find((movie) => movie.Title === title);
-
-  if (movie) {
-    res.status(200).json(movie);
-  } else {
-    res.status(400).send('no such movie');
-  }
+app.get('/movies/:Title', async (req, res) => {
+  await Movies.findOne({ Title: req.params.Title })
+    .then((movie) => {
+      res.json(movie);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send('Error: ' + err);
+    });
 });
-// GENRE by NAME
-app.get('/movies/genre/:genreName', (req, res) => {
-  const { genreName } = req.params;
-  const genre = movies.find((movie) => movie.Genre.Name === genreName).Genre;
-
-  if (genre) {
-    res.status(200).json(genre);
-  } else {
-    res.status(400).send('no such genre');
-  }
+// MOVIE by ID
+// app.get('/movies/:MovieID', async (req, res) => {
+//   await Movies.findOne({ MovieID: req.params.MovieID })
+//     .then((movie) => {
+//       res.json(movie);
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       res.status(500).send('Error: ' + err);
+//     });
+// });
+// MOVIE by Title
+app.get('/movies/:movieTitle', async (req, res) => {
+  await Movies.findOne({ MovieTitle: req.params.movieTitle })
+    .then((movie) => {
+      res.json(movie);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send('Error: ' + err);
+    });
 });
+
 // DIRECTOR by NAME
-app.get('/movies/directors/:directorName', (req, res) => {
-  const { directorName } = req.params;
-  const director = movies.find(
-    (movie) => movie.Director.Name === directorName
-  ).Director;
-
-  if (director) {
-    res.status(200).json(director);
-  } else {
-    res.status(400).send('no such director');
-  }
+app.get('/movies/directors/:directorName', async (req, res) => {
+  await Movies.findOne({ 'Director.Name': req.params.directorName })
+    .then((movies) => {
+      res.json(movies.Director);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
+
+// GENRE by NAME
+app.get('/movies/genres/:genreName', async (req, res) => {
+  await Movies.findOne({ 'Genre.Name': req.params.genreName })
+    .then((movies) => {
+      res.json(movies.Genre);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 // *****************************************************************************************************
 // Update / PUT requests
 // *****************************************************************************************************
 
-//Update user info
-app.put('/users/:id', (req, res) => {
-  const { id } = req.params;
-  const updatedUser = req.body;
-
-  let user = users.find((user) => user.id == id);
-
-  if (user) {
-    user = {
-      id: user.id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      favoriteMovies: user.favoriteMovies,
-    };
-    res.status(200).json(user);
-  } else {
-    res.status(400).send('not a registered user');
-  }
+// USER's INFO, by USERNAME
+//We’ll expect JSON in this format
+/* 
+{
+  Username: String,
+  (required)
+  Password: String,
+  (required)
+  Email: String,
+  (required)
+  Birthday: Date
+}
+*/
+app.put('/users/:Username', async (req, res) => {
+  await Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      },
+    },
+    { new: true }
+  ) // This line makes sure that the updated document is returned
+    .then((updatedUser) => {
+      // Promise
+      res.json(updatedUser);
+    })
+    .catch((err) => {
+      // Error Handling
+      console.error(err);
+      res.status(500).send('Error:' + err);
+    });
 });
 
 // *****************************************************************************************************
 // DELETE / DELETE requests
 // *****************************************************************************************************
-// Delete Movie from Favorite Movies List
-app.delete('/users/:id/:movieTitle', (req, res) => {
-  const { id, movieTitle } = req.params;
+app.delete('/users/:Username/movies/:MovieID', (req, res) => {
+  const { Username, MovieID } = req.params;
 
-  let user = users.find((user) => user.id == id);
-  if (user) {
-    userMovie = user.favoriteMovies.filter((title) => title !== movieTitle);
-    res
-      .status(200)
-      .send(
-        `"${movieTitle}" has been removed from ${user.name}'s favorite movies.`
+  Users.findOne({ Username })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send('User not found');
+      }
+      return Users.findOneAndUpdate(
+        { Username },
+        { $pull: { FavoriteMovies: MovieID } },
+        { new: true }
       );
-  } else {
-    res.status(400).send('could not update favorite movies');
-  }
-  console.log(JSON.stringify(user.favoriteMovies));
+    })
+    .then((updatedUser) => {
+      res.status(200).json(updatedUser);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
-//Delete a user
-app.delete('/users/:id/', (req, res) => {
-  const { id } = req.params;
-  let user = users.find((user) => user.id == id);
-
-  if (user) {
-    users = users.filter((user) => user.id != id);
-    console.log(users);
-    res
-      .status(200)
-      .send(`User "${user.name}" (User-ID: ${user.id}) has been deleted`);
-  } else {
-    res.status(400).send('could not update user');
-  }
+// DELETE a USER by USERNAME
+app.delete('/users/:Username', async (req, res) => {
+  await Users.findOneAndDelete({ Username: req.params.Username })
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.Username + ' was not found');
+      } else {
+        res.status(200).send(req.params.Username + ' was deleted.');
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
-
 // *******************************************************************************************************
 // Error Handling with Express
 // *******************************************************************************************************
