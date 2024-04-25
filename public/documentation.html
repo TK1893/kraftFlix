@@ -50,9 +50,13 @@
         </h2>
         <p>MERN (MongoDB, Express, React, and Node.js)
         </p>
-        <h2>Current development phase</h2>
-        <p>In the current development phase, the server-side component of the application is being created - a Rest API.
-            <br> This will interact with a database in which data on various films is stored.
+        <h2>Current development phase - Backend</h2>
+        <p>In the current development phase, the backend side of the application is created with the following
+            technologies and tools: <br>
+            Node.js and Express for the Rest API, <br>
+            MongoDB for building the non-relational database, <br>
+            Mongoose for modeling the business logic.
+
         </p>
 
         <h2> REST API “kraftFlix”</h2>
@@ -80,33 +84,32 @@
                 <!-- MOVIE data -->
                 <tr>
                     <td>Get data about a single movie by title</td>
-                    <td>/movies/[Title]</td>
+                    <td>/movies/:movieTitle</td>
                     <td>GET</td>
                     <td>None</td>
                     <td>A JSON object holding data about the requested movie like this: <br><br>
-                        { <br>
-                        Title: "Dead Man", <br>
-                        Release-year: 1995, <br>
-                        Director: {
-                        Name: 'Jim Jarmusch',
-                        Birth: 1953,
-                        Death: '-',
-                        Bio: 'Moved to New York City at the age of seventeen from Akron, Ohio. Graduated from Columbia
-                        University with a B.A. in English, class of 1975. Without any prior film experience, he was
-                        accepted into the Tisch School of the Arts, New York.', <br>
-                        }, <br>
-                        Genre: {
-                        Name: 'Western',
-                        Description:
-                        'Should contain numerous scenes and/or a narrative where the portrayal is similar to that of
-                        frontier life in the American West during 1600s to contemporary times.',
-                        },
+                        {<br>
+                        "Genre": {<br>
+                        "Name": "Science Fiction",<br>
+                        "Description": "Movies that explore speculative or futuristic concepts."<br>
+                        },<br>
+                        "Director": {<br>
+                        "Name": "Christopher Nolan",<br>
+                        "Bio": "Christopher Nolan is a British-American film director, producer, and screenwriter."<br>
+                        },<br>
+                        "Actors": [],<br>
+                        "_id": "6629095e6e3b378ee9117b85",<br>
+                        "Title": "Inception",<br>
+                        "Description": "A thief who enters the dreams of others to steal their secrets.",<br>
+                        "Imageurl": "https://example.com/inception.jpg",<br>
+                        "Featured": true<br>
+                        }<br>
                     </td>
                 </tr>
                 <!-- GENRE data -->
                 <tr>
                     <td>Get data about a genre by name</td>
-                    <td>/movies/genres/[genreName]</td>
+                    <td>/movies/genres/:genreName</td>
                     <td>GET</td>
                     <td>None</td>
                     <td> A JSON object holding data about a requested genre like this: <br><br>
@@ -120,18 +123,14 @@
                 <!-- DIRECTOR data -->
                 <tr>
                     <td>Get data about a director by name</td>
-                    <td>/movies/directors/[directorName] </td>
+                    <td>/movies/directors/:directorName </td>
                     <td>GET</td>
                     <td>None</td>
                     <td>A JSON object holding data about the requested director like this: <br><br>
-                        { <br>
-                        Name: "Jim Jarmusch", <br>
-                        Birth : 1953, <br>
-                        Death: , <br>
-                        Bio: "Moved to New York City at the age of seventeen from Akron, Ohio. Graduated from Columbia
-                        University with a B.A. in English, class of '75. Without any prior film experience, he was
-                        accepted into the Tisch School of the Arts, New York." <br>
-                        }
+                        {<br>
+                        "Name": "Francis Ford Coppola",<br>
+                        "Bio": "Francis Ford Coppola is an American film director, producer, and screenwriter."<br>
+                        }<br>
                     </td>
                 </tr>
                 <!-- USERS  ************************************************************* -->
@@ -142,58 +141,110 @@
                     <td>/users </td>
                     <td>GET</td>
                     <td>None</td>
-                    <td> A JSON object holding data about all users</td>
+                    <td> A JSON object holding data about all users <br>
+                        Example: <br>
+                        {
+                        "_id": "662941f5ca83a0f7ed117b80",
+                        "Username": "johnny_d",
+                        "Password": "pwd_1234",
+                        "Email": "john.doe@example.com",
+                        "Birthdate": "1990-05-15T00:00:00.000Z",
+                        "FavoriteMovies": []
+                        }, <br>
+                        {
+                        "_id": "662941f5ca83a0f7ed117b81",
+                        "Username": "jane_s",
+                        "Password": "securepass321",
+                        "Birthdate": "1985-11-20T00:00:00.000Z",
+                        "Email": "jane.smith@example.com",
+                        "FavoriteMovies": []
+                        },
+
+                    </td>
+                </tr>
+                <!-- Data of single USERS -->
+                <tr>
+                    <td>Get user data by Username</td>
+                    <td>/users/:Username </td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td> A JSON object holding data about a single users <br>
+                        Example: <br>
+                        {<br>
+                        "_id": "662941f5ca83a0f7ed117b80",<br>
+                        "Username": "johnny_d",<br>
+                        "Password": "pwd_1234",<br>
+                        "Email": "john.doe@example.com",<br>
+                        "Birthdate": "1990-05-15T00:00:00.000Z",<br>
+                        "FavoriteMovies": []<br>
+                        }, <br>
+                    </td>
                 </tr>
                 <!-- REGISTER -->
                 <tr>
                     <td>Create a new User</td>
                     <td>/users </td>
                     <td>POST</td>
-                    <td>A JSON object holding data about the user to add, structured as follows: <br> <br>
-                        { ID: UID
-                        ,<br>
-                        Username: String,<br>
-                        password: String, <br>
-                        Email: String,<br>
-                        Birth-date: 'YYYY-MM-DD' }
+                    <td>A JSON object holding data about the user. The entry of Username Password and Email is
+                        mandatory. <br><br>
+                        Example:<br>
+                        {<br>
+                        "Username": "Ole Muster", <br>
+                        "Password": "sddsfhk",<br>
+                        "Email": "ole.muster@gmail.com",<br>
+                        "Birthdate":"1997-07-09"<br>
+                        }
                     </td>
-                    <td>A JSON object holding data about the user that was added, including an ID: <br> <br>
-                        { <br>
-                        ID: UID,<br>
-                        Username: String,<br>
-                        password: String, <br>
-                        Email: String,<br>
-                        Birth-date: 'YYYY-MM-DD' <br>
+                    <td>A JSON object holding data about the user that was added, including an automatically
+                        generated<br><br>
+                        Example:<br>
+                        {<br>
+                        "Username": "Ole Muster",<br>
+                        "Password": "sddsfhk",<br>
+                        "Email": "ole.muster@gmail.com",<br>
+                        "Birthdate": "1997-07-09T00:00:00.000Z",<br>
+                        "FavoriteMovies": [],<br>
+                        "_id": "66297d82166200db30c72e07",<br>
                         }
                     </td>
                 </tr>
                 <!-- UPDATE -->
                 <tr>
                     <td>Update user data</td>
-                    <td>/users/[userID] </td>
+                    <td>/users/:Username </td>
                     <td>PUT</td>
                     <td>A JSON object holding data about the user to add, structured as follows: <br> <br>
-                        { ID: UID,<br>
+                        { <br>
                         Username: String,<br>
-                        password: String, <br>
+                        Password: String, <br>
                         Email: String,<br>
-                        Birth-date: 'YYYY-MM-DD' <br>
+                        Birth-date: Date <br>
+                        } <br>
+                        Example:<br>
+                        {<br>
+                        "Username": "Ole Muster",<br>
+                        "Password": "sddsfhk",<br>
+                        "Email": "ole.muster@gmail.com",<br>
+                        "Birthdate": "1997-07-09T",<br>
                         }
+
                     </td>
                     <td>A JSON object holding data about the user that was added, including an ID: <br> <br>
-                        { <br>
-                        ID: UID,<br>
-                        Username: String,<br>
-                        password: String, <br>
-                        Email: String,<br>
-                        Birth-date: 'YYYY-MM-DD' <br>
+                        Example:<br>
+                        {<br>
+                        "Username": "Ole Muster",<br>
+                        "Password": "sddsfhk",<br>
+                        "Email": "ole.muster@gmail.com",<br>
+                        "Birthdate": "1997-07-09T00:00:00.000Z",<br>
+                        "FavoriteMovies": [],<br>
+                        "_id": "662a0274e48055466d70729f"<br>
                         }
                     </td>
                 </tr>
                 <!-- DELETE USER-->
                 <tr>
                     <td>Delete existing user</td>
-                    <td>/users/[userID]</td>
+                    <td>/users/:Username/movies/:MovieID</td>
                     <td>DELETE</td>
                     <td>None</td>
                     <td> A confirmation that the user has been deleted </td>
@@ -202,11 +253,11 @@
                 <!-- ADDING MOVIE-->
                 <tr>
                     <td>Adding a movie to a user's favorites list</td>
-                    <td>/users/[userID]/[movieTitle]</td>
+                    <td>/users/:Username/movies/:MovieID</td>
                     <td>POST</td>
                     <td>None</td>
                     <td> A text message indicating whether the movie has been successfully added to the user's list of
-                        favorite movies
+                        favorite movies with an updated list of favorite movies. <br>
                     </td>
                 </tr>
                 <!-- DELETING MOVIE-->

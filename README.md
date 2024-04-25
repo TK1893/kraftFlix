@@ -24,6 +24,10 @@ This is the origin for the development of my web application "kraftFlix". The ap
 
 MERN (MongoDB, Express, React, and Node.js)
 
-## Current development phase
+## Current development phase - Backend
 
-In the current development phase, the server-side component of the application is being created - a Rest API. This will interact with a database in which data on various films is stored.
+In the current development phase, the backend side of the application is created with the following technologies & tools:
+
+- Node.js and Express for the Rest API,
+- MongoDB for building the non-relational database,
+- Mongoose for modeling the business logic.
