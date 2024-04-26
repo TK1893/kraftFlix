@@ -285,7 +285,11 @@ app.delete(
         );
       })
       .then((updatedUser) => {
-        res.status(200).json(updatedUser);
+        res
+          .status(200)
+          .send(
+            `Favorite Movie ${MovieID} was deleted. \n Updated Favorite Movies of ${updatedUser.Username}:\n[ ${updatedUser.FavoriteMovies} ]`
+          );
       })
       .catch((error) => {
         console.error(error);

@@ -180,7 +180,7 @@
                         }, <br>
                     </td>
                 </tr>
-                <!-- REGISTER -->
+                <!-- USER REGISTER -->
                 <tr>
                     <td>Register a new user</td>
                     <td>/users </td>
@@ -206,6 +206,26 @@
                         "FavoriteMovies": [],<br>
                         "_id": "66297d82166200db30c72e07",<br>
                         }
+                    </td>
+                </tr>
+                <!-- USER LOGIN  -->
+                <tr>
+                    <td>User Login</td>
+                    <td>/login </td>
+                    <td>POST</td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <!-- ADDING MOVIE to FAVORITE MOVIES-->
+                <tr>
+                    <td>Adding a movie to a user's favorites Movies</td>
+                    <td>/users/:Username/movies/:MovieID</td>
+                    <td>POST</td>
+                    <td>None</td>
+                    <td> A text message indicating whether the movie has been successfully added to the user's list of
+                        favorite movies with an updated list of favorite movies. <br>
                     </td>
                 </tr>
                 <!-- UPDATE -->
@@ -249,18 +269,8 @@
                     <td>None</td>
                     <td> A confirmation that the user has been deleted </td>
                 </tr>
-                <!-- MOVIE FAVORITES LIST ************************************************************-->
-                <!-- ADDING MOVIE-->
-                <tr>
-                    <td>Adding a movie to a user's favorites Movies</td>
-                    <td>/users/:Username/movies/:MovieID</td>
-                    <td>POST</td>
-                    <td>None</td>
-                    <td> A text message indicating whether the movie has been successfully added to the user's list of
-                        favorite movies with an updated list of favorite movies. <br>
-                    </td>
-                </tr>
-                <!-- DELETING MOVIE-->
+
+                <!-- DELETING MOVIE from FAVORITEMOVIES-->
                 <tr>
                     <td>Deleting a movie from a user's favorites list</td>
                     <td>/users/:Username/movies/:MovieID</td>
