@@ -217,8 +217,8 @@ app.get(
 // Update / PUT requests
 // *****************************************************************************************************
 
-// USER DATA, by USERNAME
-//We’ll expect JSON in this format
+// UPDATE USER DATA by USERNAME
+// expect JSON in this format
 /* 
 {
   Username: String,
@@ -302,7 +302,6 @@ app.delete(
     if (req.user.Username !== req.params.Username) {
       return res.status(400).send('Permission denied');
     }
-
     await Users.findOneAndDelete({ Username: req.params.Username })
       .then((user) => {
         if (!user) {

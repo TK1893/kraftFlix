@@ -75,7 +75,7 @@
                 <!-- MOVIE  ************************************************************* -->
                 <!-- LIST of all Movies -->
                 <tr>
-                    <td>Get a list of all movies</td>
+                    <td>Get all movies</td>
                     <td>/movies</td>
                     <td>GET</td>
                     <td>None</td>
@@ -137,7 +137,7 @@
 
                 <!-- LIST of all USERS -->
                 <tr>
-                    <td>Get list of ALL users</td>
+                    <td>Get ALL users</td>
                     <td>/users </td>
                     <td>GET</td>
                     <td>None</td>
@@ -164,7 +164,7 @@
                 </tr>
                 <!-- Data of single USERS -->
                 <tr>
-                    <td>Get user data by Username</td>
+                    <td>Get user data by username</td>
                     <td>/users/:Username </td>
                     <td>GET</td>
                     <td>None</td>
@@ -182,7 +182,7 @@
                 </tr>
                 <!-- REGISTER -->
                 <tr>
-                    <td>Create a new User</td>
+                    <td>Register a new user</td>
                     <td>/users </td>
                     <td>POST</td>
                     <td>A JSON object holding data about the user. The entry of Username Password and Email is
@@ -210,7 +210,7 @@
                 </tr>
                 <!-- UPDATE -->
                 <tr>
-                    <td>Update user data</td>
+                    <td>Update user data by username</td>
                     <td>/users/:Username </td>
                     <td>PUT</td>
                     <td>A JSON object holding data about the user to add, structured as follows: <br> <br>
@@ -243,8 +243,8 @@
                 </tr>
                 <!-- DELETE USER-->
                 <tr>
-                    <td>Delete existing user</td>
-                    <td>/users/:Username/movies/:MovieID</td>
+                    <td>Delete existing user by username</td>
+                    <td>/users/:Username</td>
                     <td>DELETE</td>
                     <td>None</td>
                     <td> A confirmation that the user has been deleted </td>
@@ -252,7 +252,7 @@
                 <!-- MOVIE FAVORITES LIST ************************************************************-->
                 <!-- ADDING MOVIE-->
                 <tr>
-                    <td>Adding a movie to a user's favorites list</td>
+                    <td>Adding a movie to a user's favorites Movies</td>
                     <td>/users/:Username/movies/:MovieID</td>
                     <td>POST</td>
                     <td>None</td>
@@ -263,7 +263,7 @@
                 <!-- DELETING MOVIE-->
                 <tr>
                     <td>Deleting a movie from a user's favorites list</td>
-                    <td>/users/[userID]/[movieTitle]</td>
+                    <td>/users/:Username/movies/:MovieID</td>
                     <td>DELETE</td>
                     <td>None</td>
                     <td> A text message indicating whether the film has been successfully deleted from the user's list
