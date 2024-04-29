@@ -7,6 +7,24 @@ const path = require('path');
 const app = express();
 
 app.use(bodyParser.json()); // To read body information
+const cors = require('cors'); // CORS
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com']; // Defining list of allowed domains
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // If a specific origin isn’t found on the list of allowed origins
+        let message =
+          'The CORS policy for this application doesn’t allow access from origin ' +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
+
 let auth = require('./auth')(app); // To import Authentication Logic defined in auth.js
 const passport = require('passport'); // to require passport Module
 require('./passport'); // To import passport.js
@@ -21,15 +39,18 @@ mongoose.connect('mongodb://localhost:27017/kraftFlixDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
+// Server-Side Validation with Express Validator Library
+const { check, validationResult } = require('express-validator');
 // createWriteStream() = fs function fo create a write stream (in append mode)
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
   flags: 'a',
 });
 // setup the logger ( using Morgan Middleware)
 app.use(morgan('combined', { stream: accessLogStream }));
-// app.use = Express method that mounts middleware functions to a specific path.
+// Express method that mounts middleware functions to a specific path.
 
+// ****************************************************************************************************
+// DOCUMENTATION Endpoint
 app.use(
   '/documentation',
   express.static('public', { index: 'documentation.html' })
@@ -45,32 +66,56 @@ app.use(
 // We’ll expect JSON in this format
 // { ID: Integer, Username: String, Password: String, Email: String, Birthday: Date }
 
-app.post('/users', async (req, res) => {
-  await Users.findOne({ Username: req.body.Username })
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + ' already exists');
-      } else {
-        Users.create({
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthdate: req.body.Birthdate,
-        })
-          .then((user) => {
-            res.status(201).json(user);
+app.post(
+  '/users',
+  // Validation logic here for request
+  //you can either use a chain of methods like .not().isEmpty()
+  //which means "opposite of isEmpty" in plain english "is not empty"
+  //or use .isLength({min: 5}) which means
+  //minimum value of 5 characters are only allowed
+  [
+    check('Username', 'Username is required').isLength({ min: 5 }),
+    check(
+      'Username',
+      'Username contains non alphanumeric characters - not allowed.'
+    ).isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail(),
+  ],
+  async (req, res) => {
+    // check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    let hashedPassword = Users.hashPassword(req.body.Password); // Hashing User Password when registering
+    await Users.findOne({ Username: req.body.Username })
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.Username + ' already exists');
+        } else {
+          Users.create({
+            Username: req.body.Username,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Birthdate: req.body.Birthdate,
           })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
-});
+            .then((user) => {
+              res.status(201).json(user);
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  }
+);
 // ADD MOVIE to FavoriteMovies
 app.post(
   '/users/:Username/movies/:MovieID',
@@ -148,7 +193,7 @@ app.get(
   }
 );
 
-// All MOVIES - check
+// All MOVIES
 app.get(
   '/movies',
   passport.authenticate('jwt', { session: false }),
