@@ -85,10 +85,10 @@ app.post(
   async (req, res) => {
     // check the validation object for errors
     let errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
+
     let hashedPassword = Users.hashPassword(req.body.Password); // Hashing User Password when registering
     await Users.findOne({ Username: req.body.Username })
       .then((user) => {
