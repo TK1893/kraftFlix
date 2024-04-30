@@ -34,8 +34,13 @@ const mongoose = require('mongoose'); // Mongoose package
 const Models = require('./models.js'); // Mongoose-Models definded in models.js
 const Movies = Models.Movie; // Model name defined in models.js
 const Users = Models.User; // Model name defined in models.js
-// allows Mongoose to connect to the database to perform CRUD operations on the containing documents
-mongoose.connect('mongodb://localhost:27017/kraftFlixDB', {
+// LOCAL DATABASE - allows Mongoose to connect to db (to perform CRUD operations on the containing documents)
+// mongoose.connect('mongodb://localhost:27017/kraftFlixDB', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+// CONLINE DATABASE - allows Mongoose to connect to db (to perform CRUD operations on the containing documents)
+mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
