@@ -6,7 +6,6 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 
-app.use(bodyParser.json()); // To read body information
 const cors = require('cors'); // CORS
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com']; // Defining list of allowed domains
 app.use(
@@ -15,15 +14,15 @@ app.use(
       if (!origin) return callback(null, true);
       if (allowedOrigins.indexOf(origin) === -1) {
         // If a specific origin isn’t found on the list of allowed origins
-        let message =
-          'The CORS policy for this application doesn’t allow access from origin ' +
-          origin;
+        let message = `The CORS policy for this application does not allow access from origin 
+          ${origin}`;
         return callback(new Error(message), false);
       }
       return callback(null, true);
     },
   })
 );
+app.use(bodyParser.json()); // To read body information
 
 let auth = require('./auth')(app); // To import Authentication Logic defined in auth.js
 const passport = require('passport'); // to require passport Module
@@ -34,6 +33,7 @@ const mongoose = require('mongoose'); // Mongoose package
 const Models = require('./models.js'); // Mongoose-Models definded in models.js
 const Movies = Models.Movie; // Model name defined in models.js
 const Users = Models.User; // Model name defined in models.js
+
 // LOCAL DATABASE - allows Mongoose to connect to db (to perform CRUD operations on the containing documents)
 // mongoose.connect('mongodb://localhost:27017/kraftFlixDB', {
 //   useNewUrlParser: true,
@@ -73,11 +73,6 @@ app.use(
 
 app.post(
   '/users',
-  // Validation logic here for request
-  //you can either use a chain of methods like .not().isEmpty()
-  //which means "opposite of isEmpty" in plain english "is not empty"
-  //or use .isLength({min: 5}) which means
-  //minimum value of 5 characters are only allowed
   [
     check('Username', 'Username is required').isLength({ min: 5 }),
     check(
@@ -148,9 +143,6 @@ app.post(
             `New Favorite Movie ${MovieID} was added. \n Updated Favorite Movies of ${updatedUser.Username}:\n[ ${updatedUser.FavoriteMovies} ]`
           );
       })
-      // .then((updatedUser) => {
-      //   res.status(200).json(updatedUser);
-      // })
       .catch((error) => {
         console.error(error);
         res.status(500).send('Error: ' + error);
@@ -382,7 +374,3 @@ const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
   console.log('Listening on Port ' + port);
 });
-
-// app.listen(8080, () => {
-//   console.log('Your app is listening on port 8080.');
-// });
