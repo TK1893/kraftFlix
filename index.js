@@ -6,14 +6,17 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 
-const cors = require('cors'); // CORS
+app.use(bodyParser.json()); // To read body information
+
+// CORS Integration
+const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com']; // Defining list of allowed domains
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
       if (allowedOrigins.indexOf(origin) === -1) {
-        // If a specific origin isn’t found on the list of allowed origins
+        // If a origin isn’t found on the list of allowed origins
         let message = `The CORS policy for this application does not allow access from origin 
           ${origin}`;
         return callback(new Error(message), false);
@@ -22,7 +25,6 @@ app.use(
     },
   })
 );
-app.use(bodyParser.json()); // To read body information
 
 let auth = require('./auth')(app); // To import Authentication Logic defined in auth.js
 const passport = require('passport'); // to require passport Module
@@ -39,6 +41,7 @@ const Users = Models.User; // Model name defined in models.js
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true,
 // });
+
 // CONLINE DATABASE - allows Mongoose to connect to db (to perform CRUD operations on the containing documents)
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
@@ -88,8 +91,9 @@ app.post(
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-
-    let hashedPassword = Users.hashPassword(req.body.Password); // Hashing User Password when registering
+    // Hashing User Password when registering
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    // Search to check if a user with the requested username already exists
     await Users.findOne({ Username: req.body.Username })
       .then((user) => {
         if (user) {
