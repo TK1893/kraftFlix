@@ -44,13 +44,17 @@ const Users = Models.User; // Model name defined in models.js
 
 // CONLINE DATABASE - allows Mongoose to connect to db (to perform CRUD operations on the containing documents)
 mongoose.connect(
-  `mongodb+srv://test:test1234@kraftdb.fiv6pfm.mongodb.net/
-`,
+  'mongodb+srv://tobiaskraft1:tk1234@myflixdb.d9u5qbt.mongodb.net/?retryWrites=true&w=majority&appName=myflixDB',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   }
 );
+// Testing with Lucien
+// mongoose.connect(`mongodb+srv://test:test1234@kraftdb.fiv6pfm.mongodb.net/`, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 // Server-Side Validation with Express Validator Library
 const { check, validationResult } = require('express-validator');
 // createWriteStream() = fs function fo create a write stream (in append mode)
