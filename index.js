@@ -10,7 +10,11 @@ app.use(bodyParser.json()); // To read body information
 
 // CORS Integration
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com']; // Defining list of allowed domains
+let allowedOrigins = [
+  'http://localhost:8080',
+  'http://testsite.com',
+  'https://kraftflix-89566322872a.herokuapp.com/',
+]; // Defining list of allowed domains
 app.use(
   cors({
     origin: (origin, callback) => {
