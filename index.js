@@ -44,7 +44,7 @@ const Users = Models.User; // Model name defined in models.js
 
 // CONLINE DATABASE - allows Mongoose to connect to db (to perform CRUD operations on the containing documents)
 mongoose.connect(
-  'mongodb+srv://tobiaskraft1:<tk1234@myflixdb.d9u5qbt.mongodb.net/?retryWrites=true&w=majority&appName=myflixDB',
+  'mongodb+srv://tobiaskraft1:tk1234@myflixdb.d9u5qbt.mongodb.net/?retryWrites=true&w=majority&appName=myflixDB',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
