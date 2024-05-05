@@ -275,67 +275,67 @@ app.get(
   Birthday: Date
 }
 */
-// app.put(
-//   '/users/:Username',
-//   [
-//     // Input validation
-//     check('Username', 'Username is required').isLength({ min: 5 }),
-//     check(
-//       'Username',
-//       'Username contains non alphanumeric characters - not allowed.'
-//     ).isAlphanumeric(),
-//     check('Password', 'Password is required').not().isEmpty(),
-//     check('Email', 'Email does not appear to be valid').isEmail(),
-//   ],
-//   passport.authenticate('jwt', { session: false }),
-//   async (req, res) => {
-//     // check the validation object for errors
-//     let errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return res.status(422).json({ errors: errors.array() });
-//     }
-//     // Check if the authenticated user is the same as the user being updated
-//     if (req.user.Username !== req.params.Username) {
-//       return res.status(400).send('Permission denied');
-//     }
-//     // Update the user data with hashed password
-//     await Users.findOneAndUpdate(
-//       { Username: req.params.Username },
-//       {
-//         $set: {
-//           Username: req.body.Username,
-//           Password: req.body.Password,
-//           Email: req.body.Email,
-//           Birthday: req.body.Birthday,
-//         },
-//       },
-//       { new: true }
-//     ) // This line makes sure that the updated document is returned
-//       .then((updatedUser) => {
-//         // Promise
-//         res.json(updatedUser);
-//       })
-//       .catch((err) => {
-//         // Error Handling
-//         console.error(err);
-//         res.status(500).send('Error:' + err);
-//       });
-//   }
-// );
+app.put(
+  '/users/:Username',
+  [
+    // Input validation
+    check('Username', 'Username is required').isLength({ min: 5 }),
+    check(
+      'Username',
+      'Username contains non alphanumeric characters - not allowed.'
+    ).isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail(),
+  ],
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    // check the validation object for errors
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    // Check if the authenticated user is the same as the user being updated
+    if (req.user.Username !== req.params.Username) {
+      return res.status(400).send('Permission denied');
+    }
+    // Update the user data with hashed password
+    await Users.findOneAndUpdate(
+      { Username: req.params.Username },
+      {
+        $set: {
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
+        },
+      },
+      { new: true }
+    ) // This line makes sure that the updated document is returned
+      .then((updatedUser) => {
+        // Promise
+        res.json(updatedUser);
+      })
+      .catch((err) => {
+        // Error Handling
+        console.error(err);
+        res.status(500).send('Error:' + err);
+      });
+  }
+);
 // *****************************************************************************
 app.put(
   '/users/:Username',
   [
     // Input validation here
-    check('username', 'Username is required').notEmpty(),
+    check('Username', 'Username is required').isLength({ min: 5 }),
     check(
-      'username',
-      'Username contains non-alphanumeric characters - not allowed.'
+      'Username',
+      'Username contains non alphanumeric characters - not allowed.'
     ).isAlphanumeric(),
-    check('password', 'Password is required').notEmpty(),
-    check('email', 'Email does not appear to be valid').isEmail(),
-    passport.authenticate('jwt', { session: false }),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail(),
   ],
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     // Check validation object for errors
     let errors = validationResult(req);
@@ -344,7 +344,7 @@ app.put(
     }
 
     // Check if the authenticated user is the same as the user being updated
-    if (req.user.username !== req.params.Username) {
+    if (req.user.Username !== req.params.Username) {
       return res.status(403).json({
         error: 'Permission denied. You can only update your own user data.',
       });
@@ -356,14 +356,13 @@ app.put(
     // Update the user data with hashed password
     try {
       const updatedUser = await Users.findOneAndUpdate(
-        { username: req.params.Username },
+        { Username: req.params.Username },
         {
           $set: {
-            username: req.body.username,
-            password: hashedPassword,
-            email: req.body.email,
-            favoriteMovies: req.body.favoriteMovies,
-            birthday: req.body.birthday,
+            Username: req.body.username,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
           },
         },
         { new: true }
@@ -377,7 +376,7 @@ app.put(
       // Construct response object with updated user and token
       return res.status(200).json({
         message: 'User information updated successfully',
-        user: updatedUser,
+        User: updatedUser,
         token,
       });
     } catch (err) {
