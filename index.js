@@ -314,8 +314,8 @@ app.put(
       .then((updatedUser) => {
         // Promise
         // res.json(updatedUser);
-        let token = generateJWTToken(updatedUser.toJSON());
-        return res.json({ updatedUser, token });
+        let tok = generateJWTToken(updatedUser.toJSON());
+        return res.json({ updatedUser, tok });
       })
       .catch((err) => {
         // Error Handling
