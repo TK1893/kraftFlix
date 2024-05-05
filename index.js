@@ -275,30 +275,81 @@ app.get(
   Birthday: Date
 }
 */
+// app.put(
+//   '/users/:Username',
+//   [
+//     // Input validation
+//     check('Username', 'Username is required').isLength({ min: 5 }),
+//     check(
+//       'Username',
+//       'Username contains non alphanumeric characters - not allowed.'
+//     ).isAlphanumeric(),
+//     check('Password', 'Password is required').not().isEmpty(),
+//     check('Email', 'Email does not appear to be valid').isEmail(),
+//     passport.authenticate('jwt', { session: false }),
+//   ],
+//   async (req, res) => {
+//     // check the validation object for errors
+//     let errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       return res.status(422).json({ errors: errors.array() });
+//     }
+//     // Check if the authenticated user is the same as the user being updated
+//     if (req.user.Username !== req.params.Username) {
+//       return res.status(400).send('Permission denied');
+//     }
+//     // Update the user data with hashed password
+//     await Users.findOneAndUpdate(
+//       { Username: req.params.Username },
+//       {
+//         $set: {
+//           Username: req.body.Username,
+//           Password: req.body.Password,
+//           Email: req.body.Email,
+//           Birthday: req.body.Birthday,
+//         },
+//       },
+//       { new: true }
+//     ) // This line makes sure that the updated document is returned
+//       .then((updatedUser) => {
+//         // Promise
+//         // res.json(updatedUser);
+//         let tok = generateJWTToken(updatedUser.toJSON());
+//         return res.json({ updatedUser, tok });
+//       })
+//       .catch((err) => {
+//         // Error Handling
+//         console.error(err);
+//         res.status(500).send('Error:' + err);
+//       });
+//   }
+// );
+// *****************************************************************************
 app.put(
   '/users/:Username',
   [
-    // Input validation
+    //input validation here
     check('Username', 'Username is required').isLength({ min: 5 }),
     check(
       'Username',
-      'Username contains non alphanumeric characters - not allowed.'
+      'Username contains non alphanumeric characters not allowed.'
     ).isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail(),
-    passport.authenticate('jwt', { session: false }),
   ],
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    // check the validation object for errors
+    //check validation object for errors
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    // Check if the authenticated user is the same as the user being updated
+
+    //condition to check that username in request matches username in request params
     if (req.user.Username !== req.params.Username) {
-      return res.status(400).send('Permission denied');
+      return res.status(400).send('Permission denied.');
     }
-    // Update the user data with hashed password
+    //condition ends, finds user and updates their info
     await Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
@@ -307,25 +358,20 @@ app.put(
           Password: req.body.Password,
           Email: req.body.Email,
           Birthday: req.body.Birthday,
+          //FavouriteMovies: req.body.FavouriteMovies,
         },
       },
-      { new: true }
-    ) // This line makes sure that the updated document is returned
+      { new: true } //this line makes sure the updated document is returned
+    )
       .then((updatedUser) => {
-        // Promise
-        // res.json(updatedUser);
-        let tok = generateJWTToken(updatedUser.toJSON());
-        return res.json({ updatedUser, tok });
+        res.json(updatedUser);
       })
       .catch((err) => {
-        // Error Handling
         console.error(err);
         res.status(500).send('Error:' + err);
       });
   }
 );
-// *****************************************************************************
-
 // ****************************************************************************************************************
 // Add a movie to a user's list of favorites
 app.post(
