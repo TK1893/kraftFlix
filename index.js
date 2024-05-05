@@ -275,58 +275,10 @@ app.get(
   Birthday: Date
 }
 */
-// app.put(
-//   '/users/:Username',
-//   [
-//     // Input validation
-//     check('Username', 'Username is required').isLength({ min: 5 }),
-//     check(
-//       'Username',
-//       'Username contains non alphanumeric characters - not allowed.'
-//     ).isAlphanumeric(),
-//     check('Password', 'Password is required').not().isEmpty(),
-//     check('Email', 'Email does not appear to be valid').isEmail(),
-//   ],
-//   passport.authenticate('jwt', { session: false }),
-//   async (req, res) => {
-//     // check the validation object for errors
-//     let errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return res.status(422).json({ errors: errors.array() });
-//     }
-//     // Check if the authenticated user is the same as the user being updated
-//     if (req.user.Username !== req.params.Username) {
-//       return res.status(400).send('Permission denied');
-//     }
-//     // Update the user data with hashed password
-//     await Users.findOneAndUpdate(
-//       { Username: req.params.Username },
-//       {
-//         $set: {
-//           Username: req.body.Username,
-//           Password: req.body.Password,
-//           Email: req.body.Email,
-//           Birthday: req.body.Birthday,
-//         },
-//       },
-//       { new: true }
-//     ) // This line makes sure that the updated document is returned
-//       .then((updatedUser) => {
-//         // Promise
-//         res.json(updatedUser);
-//       })
-//       .catch((err) => {
-//         // Error Handling
-//         console.error(err);
-//         res.status(500).send('Error:' + err);
-//       });
-//   }
-// );
-// *****************************************************************************
 app.put(
   '/users/:Username',
   [
-    // Input validation here
+    // Input validation
     check('Username', 'Username is required').isLength({ min: 5 }),
     check(
       'Username',
@@ -337,77 +289,42 @@ app.put(
   ],
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    // Check validation object for errors
+    // check the validation object for errors
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-
     // Check if the authenticated user is the same as the user being updated
     if (req.user.Username !== req.params.Username) {
-      return res.status(403).json({
-        error: 'Permission denied. You can only update your own user data.',
-      });
+      return res.status(400).send('Permission denied');
     }
-
-    // Hash the password before updating the user's information
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
     // Update the user data with hashed password
-    try {
-      const updatedUser = await Users.findOneAndUpdate(
-        { Username: req.params.Username },
-        {
-          $set: {
-            Username: req.body.username,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday,
-          },
+    await Users.findOneAndUpdate(
+      { Username: req.params.Username },
+      {
+        $set: {
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
         },
-        { new: true }
-      );
-
-      // After updating the user's information, generate a new JWT token
-      const token = jwt.sign({ sub: updatedUser._id }, 'MySecretKey2024!', {
-        expiresIn: '1h',
+      },
+      { new: true }
+    ) // This line makes sure that the updated document is returned
+      .then((updatedUser) => {
+        // Promise
+        // res.json(updatedUser);
+        let token = generateJWTToken(updatedUser.toJSON());
+        return res.json({ updatedUser, token });
+      })
+      .catch((err) => {
+        // Error Handling
+        console.error(err);
+        res.status(500).send('Error:' + err);
       });
-
-      // Construct response object with updated user and token
-      return res.status(200).json({
-        message: 'User information updated successfully',
-        User: updatedUser,
-        token,
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    }
   }
 );
-
-// Login route
-app.post('/login', async (req, res) => {
-  const { Username, Password } = req.body;
-
-  try {
-    const user = await Users.findOne({ Username });
-
-    if (!user || !user.validatePassword(Password)) {
-      return res.status(400).json({ error: 'Invalid username or password' });
-    }
-
-    const token = jwt.sign({ sub: user._id }, 'MySecretKey2024!', {
-      expiresIn: '1h',
-    });
-
-    // Respond with token
-    return res.status(200).json({ message: 'Login successful', token });
-  } catch (error) {
-    console.error('Error during login:', error);
-    return res.status(500).json({ error: 'Something went wrong during login' });
-  }
-});
+// *****************************************************************************
 
 // ****************************************************************************************************************
 // Add a movie to a user's list of favorites
