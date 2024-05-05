@@ -48,15 +48,8 @@ const Users = Models.User; // Model name defined in models.js
 
 // CONLINE DATABASE - allows Mongoose to connect to db (to perform CRUD operations on the containing documents)
 mongoose.connect(
-  mongoose.connect('mongodb+srv://tk:<password>@kraftflixdb.sfx6qkl.mongodb.net/?retryWrites=true&w=majority&appName=kraftFlixDB', {
-  	useNewUrlParser: true,
- 	useUnifiedTopology: true,
-});
-,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
+  'mongodb+srv://tk:1893@kraftflixdb.sfx6qkl.mongodb.net/?retryWrites=true&w=majority&appName=kraftFlixDB',
+  { useNewUrlParser: true, useUnifiedTopology: true }
 );
 // Testing with Lucien
 // mongoose.connect(`mongodb+srv://test:test1234@kraftdb.fiv6pfm.mongodb.net/`, {
