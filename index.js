@@ -46,11 +46,6 @@ mongoose.connect(process.env.ConnectionURI, {
   useUnifiedTopology: true,
 });
 
-// Testing with Lucien
-// mongoose.connect(`mongodb+srv://test:test1234@kraftdb.fiv6pfm.mongodb.net/`, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
 // Server-Side Validation with Express Validator Library
 const { check, validationResult } = require('express-validator');
 // createWriteStream() = fs function fo create a write stream (in append mode)
@@ -282,17 +277,35 @@ app.get(
 */
 app.put(
   '/users/:Username',
-  passport.authenticate('jwt', { session: false }),
+  [
+    check('Username', 'Username is required').isLength({ min: 5 }),
+    check(
+      'Username',
+      'Username contains non alphanumeric characters - not allowed.'
+    ).isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail(),
+    passport.authenticate('jwt', { session: false }),
+  ],
   async (req, res) => {
+    // check the validation object for errors
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    // Check if the authenticated user is the same as the user being updated
     if (req.user.Username !== req.params.Username) {
       return res.status(400).send('Permission denied');
     }
+    // Hashing User Password before updating the user's information
+    let hashedPassword = await bcrypt.hash(req.body.password, 10);
+    // Update the user data with hashed password
     await Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
         $set: {
           Username: req.body.Username,
-          Password: req.body.Password,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         },
