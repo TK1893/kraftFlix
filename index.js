@@ -346,12 +346,12 @@ app.put(
     }
 
     //condition to check that username in request matches username in request params
-    if (req.user.Username !== req.params.Username) {
+    if (req.user.username !== req.params.username) {
       return res.status(400).send('Permission denied.');
     }
     //condition ends, finds user and updates their info
     await Users.findOneAndUpdate(
-      { Username: req.params.Username },
+      { Username: req.params.username },
       {
         $set: {
           Username: req.body.Username,
