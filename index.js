@@ -69,7 +69,7 @@ app.use(
 // CREATE / POST requests
 // *****************************************************************************************************
 
-// CREATE new USER
+// REGISTER NEW USER
 // We’ll expect JSON in this format
 // { ID: Integer, Username: String, Password: String, Email: String, Birthday: Date }
 
