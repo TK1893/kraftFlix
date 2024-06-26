@@ -15,6 +15,7 @@ let allowedOrigins = [
   'http://localhost:1234',
   'http://testsite.com',
   'https://kraftflix-89566322872a.herokuapp.com/',
+  'https://kraftflix.netlify.app',
 ]; // Defining list of allowed domains
 app.use(
   cors({
