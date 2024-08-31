@@ -13,9 +13,12 @@ const cors = require('cors');
 let allowedOrigins = [
   'http://localhost:8080',
   'http://localhost:1234',
+  'http://localhost:3000',
   'http://testsite.com',
   'https://kraftflix-89566322872a.herokuapp.com/',
+  'https://2f7sjs.csb.app/',
   'https://kraftflix.netlify.app',
+  'https://tk1893.github.io/Kraftflix-React',
 ]; // Defining list of allowed domains
 app.use(
   cors({
