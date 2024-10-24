@@ -11,6 +11,7 @@ app.use(bodyParser.json()); // To read body information
 // CORS Integration
 const cors = require('cors');
 let allowedOrigins = [
+  'http://localhost:4200',
   'http://localhost:8080',
   'http://localhost:1234',
   'http://localhost:3000',
