@@ -20,6 +20,7 @@ let allowedOrigins = [
   'https://2f7sjs.csb.app/',
   'https://kraftflix.netlify.app',
   'https://tk1893.github.io/Kraftflix-React',
+  'https://tk1893.github.io/Angular-client-kraftflix/',
 ]; // Defining list of allowed domains
 app.use(
   cors({
