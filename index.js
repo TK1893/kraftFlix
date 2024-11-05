@@ -35,15 +35,6 @@ app.use(
       }
       return callback(null, true);
     },
-    credentials: true,
-  })
-);
-
-app.options(
-  '*',
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
   })
 );
 
