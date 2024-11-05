@@ -39,6 +39,14 @@ app.use(
   })
 );
 
+app.options(
+  '*',
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
+
 let auth = require('./auth')(app); // To import Authentication Logic defined in auth.js
 const passport = require('passport'); // to require passport Module
 require('./passport'); // To import passport.js
