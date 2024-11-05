@@ -21,6 +21,7 @@ let allowedOrigins = [
   'https://kraftflix.netlify.app',
   'https://tk1893.github.io/Kraftflix-React',
   'https://tk1893.github.io/Angular-client-kraftflix',
+  'https://tk1893.github.io/Angular-client-kraftflix/welcome',
 ]; // Defining list of allowed domains
 app.use(
   cors({
