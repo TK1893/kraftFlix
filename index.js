@@ -181,38 +181,38 @@ app.post(
  * @returns {string} - Confirmation message with updated favorite movies
  * @throws {Error} - If user is not found or other error occurs
  */
-// app.post(
-//   '/users/:Username/movies/:MovieID',
-//   passport.authenticate('jwt', { session: false }),
-//   (req, res) => {
-//     const { Username, MovieID } = req.params;
-//     if (req.user.Username !== req.params.Username) {
-//       return res.status(400).send('Permission denied');
-//     }
-//     Users.findOne({ Username })
-//       .then((user) => {
-//         if (!user) {
-//           return res.status(404).send('User not found');
-//         }
-//         return Users.findOneAndUpdate(
-//           { Username },
-//           { $addToSet: { FavoriteMovies: MovieID } },
-//           { new: true }
-//         );
-//       })
-//       .then((updatedUser) => {
-//         res
-//           .status(200)
-//           .send(
-//             `New Favorite Movie ${MovieID} was added. \n Updated Favorite Movies of ${updatedUser.Username}:\n[ ${updatedUser.FavoriteMovies} ]`
-//           );
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//         res.status(500).send('Error: ' + error);
-//       });
-//   }
-// );
+app.post(
+  '/users/:Username/movies/:MovieID',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const { Username, MovieID } = req.params;
+    if (req.user.Username !== req.params.Username) {
+      return res.status(400).send('Permission denied');
+    }
+    Users.findOne({ Username })
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send('User not found');
+        }
+        return Users.findOneAndUpdate(
+          { Username },
+          { $addToSet: { FavoriteMovies: MovieID } },
+          { new: true }
+        );
+      })
+      .then((updatedUser) => {
+        res
+          .status(200)
+          .send(
+            `New Favorite Movie ${MovieID} was added. \n Updated Favorite Movies of ${updatedUser.Username}:\n[ ${updatedUser.FavoriteMovies} ]`
+          );
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  }
+);
 
 // GET-WELCOME  //////////////
 /**
@@ -355,10 +355,6 @@ app.get(
   }
 );
 
-// *****************************************************************************************************
-// Update / PUT requests
-// *****************************************************************************************************
-
 // UPDATE USER  //////////////
 /**
  * Update a user's data by username.
@@ -427,26 +423,26 @@ app.put(
  * @param {string} MovieID - The ID of the movie
  * @returns {object} - Updated user data object with the favorite movies
  */
-app.post(
-  '/users/:Username/movies/:MovieID',
-  passport.authenticate('jwt', { session: false }),
-  async (req, res) => {
-    await Users.findOneAndUpdate(
-      { username: req.params.Username },
-      {
-        $push: { favoriteMovies: req.params.MovieID },
-      },
-      { new: true }
-    ) // This line makes sure that the updated document is returned
-      .then((updatedUser) => {
-        res.json(updatedUser);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
-  }
-);
+// app.post(
+//   '/users/:Username/movies/:MovieID',
+//   passport.authenticate('jwt', { session: false }),
+//   async (req, res) => {
+//     await Users.findOneAndUpdate(
+//       { username: req.params.Username },
+//       {
+//         $push: { favoriteMovies: req.params.MovieID },
+//       },
+//       { new: true }
+//     ) // This line makes sure that the updated document is returned
+//       .then((updatedUser) => {
+//         res.json(updatedUser);
+//       })
+//       .catch((err) => {
+//         console.error(err);
+//         res.status(500).send('Error: ' + err);
+//       });
+//   }
+// );
 
 // DELETE-FAVORITE-MOVIE  //////////////
 /**
