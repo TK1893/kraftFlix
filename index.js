@@ -415,35 +415,6 @@ app.put(
   }
 );
 
-// ADD-FAVORITE-MOVIE  //////////////
-/**
- * @function POST /users/:Username/movies/:MovieID
- * @description Adds a movie to the user's list of favorite movies
- * @param {string} Username - The username of the user
- * @param {string} MovieID - The ID of the movie
- * @returns {object} - Updated user data object with the favorite movies
- */
-// app.post(
-//   '/users/:Username/movies/:MovieID',
-//   passport.authenticate('jwt', { session: false }),
-//   async (req, res) => {
-//     await Users.findOneAndUpdate(
-//       { username: req.params.Username },
-//       {
-//         $push: { favoriteMovies: req.params.MovieID },
-//       },
-//       { new: true }
-//     ) // This line makes sure that the updated document is returned
-//       .then((updatedUser) => {
-//         res.json(updatedUser);
-//       })
-//       .catch((err) => {
-//         console.error(err);
-//         res.status(500).send('Error: ' + err);
-//       });
-//   }
-// );
-
 // DELETE-FAVORITE-MOVIE  //////////////
 /**
  * @function DELETE /users/:Username/movies/:MovieID
