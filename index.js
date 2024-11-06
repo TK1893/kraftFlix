@@ -14,7 +14,7 @@
  * @requires ./models
  */
 
-// Importing required modules
+// Importing required modules  //////////////
 const express = require('express'); // Express framework
 const bodyParser = require('body-parser'); // To parse JSON bodies
 const uuid = require('uuid'); // For generating unique IDs
@@ -30,14 +30,14 @@ const app = express(); // Initialize Express app
 const Movies = Models.Movie; // Movie model from models.js
 const Users = Models.User; // User model from models.js
 
-// BODY-PARSER MIDDLEWARE
+// BODY-PARSER MIDDLEWARE  //////////////
 /**
  * Middleware for parsing JSON request bodies
  * @type {Function}
  */
 app.use(bodyParser.json()); // Middleware for parsing JSON data in request bodies
 
-// ALLOWED ORIGIN FOR CORS
+// ALLOWED ORIGIN FOR CORS  //////////////
 /**
  * @constant
  * @type {Array<string>}
@@ -57,7 +57,7 @@ let allowedOrigins = [
   'https://tk1893.github.io/Angular-client-kraftflix/welcome',
 ];
 
-// CORS MIDDLEWARE SETUP
+// CORS MIDDLEWARE SETUP  //////////////
 /**
  * @description CORS middleware setup
  */
@@ -76,12 +76,12 @@ app.use(
   })
 );
 
-// AUTHENTICATION & PASSPORT SETUP
+// AUTHENTICATION & PASSPORT SETUP  //////////////
 let auth = require('./auth')(app); // Importing authentication logic
 const passport = require('passport'); // For user authentication
 require('./passport'); // Importing passport strategies
 
-// MONGOOSE CONNECTION TO DATABASE
+// MONGOOSE CONNECTION TO DATABASE  //////////////
 /**
  * @description Establish a connection to the MongoDB database.
  * @see ConnectionURI should be defined in environment variables.
@@ -91,10 +91,10 @@ mongoose.connect(process.env.ConnectionURI, {
   useUnifiedTopology: true,
 });
 
-// SERVER-SIDE-INPUT-VALIDATION   (with Express Validator Library)
+// SERVER-SIDE-INPUT-VALIDATION   (with Express Validator Library)  //////////////
 const { check, validationResult } = require('express-validator');
 
-// LOGGER-SETUP  (using Morgan Middleware)
+// LOGGER-SETUP  (using Morgan Middleware)  //////////////
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
   flags: 'a',
 });
