@@ -1,3 +1,5 @@
+// auth.js
+
 const jwtSecret = 'your_jwt_secret'; // Must be the same key of JWTStrategy
 
 const jwt = require('jsonwebtoken');

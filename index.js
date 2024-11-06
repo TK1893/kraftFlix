@@ -1,15 +1,48 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const uuid = require('uuid');
-const morgan = require('morgan');
-const fs = require('fs');
-const path = require('path');
-const app = express();
+/**
+ * @file index.js - Main file for the movie API built with Node.js and Express
+ * @requires express
+ * @requires body-parser
+ * @requires uuid
+ * @requires morgan
+ * @requires fs
+ * @requires path
+ * @requires mongoose
+ * @requires cors
+ * @requires passport
+ * @requires ./auth
+ * @requires ./passport
+ * @requires ./models
+ */
 
-app.use(bodyParser.json()); // To read body information
+// Importing required modules
+const express = require('express'); // Express framework
+const bodyParser = require('body-parser'); // To parse JSON bodies
+const uuid = require('uuid'); // For generating unique IDs
+const morgan = require('morgan'); // HTTP request logger middleware
+const fs = require('fs'); // File system module for logging
+const path = require('path'); // Path utilities
+const cors = require('cors'); // For enabling CORS
+const mongoose = require('mongoose'); // Mongoose package - MongoDB ORM
+const Models = require('./models.js'); // Mongoose models
 
-// CORS Integration
-const cors = require('cors');
+const app = express(); // Initialize Express app
+
+const Movies = Models.Movie; // Movie model from models.js
+const Users = Models.User; // User model from models.js
+
+// BODY-PARSER MIDDLEWARE
+/**
+ * Middleware for parsing JSON request bodies
+ * @type {Function}
+ */
+app.use(bodyParser.json()); // Middleware for parsing JSON data in request bodies
+
+// ALLOWED ORIGIN FOR CORS
+/**
+ * @constant
+ * @type {Array<string>}
+ * @description List of allowed origins for CORS policy
+ */
 let allowedOrigins = [
   'http://localhost:4200',
   'http://localhost:8080',
@@ -22,7 +55,12 @@ let allowedOrigins = [
   'https://tk1893.github.io/Kraftflix-React',
   'https://tk1893.github.io/Angular-client-kraftflix',
   'https://tk1893.github.io/Angular-client-kraftflix/welcome',
-]; // Defining list of allowed domains
+];
+
+// CORS MIDDLEWARE SETUP
+/**
+ * @description CORS middleware setup
+ */
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -38,49 +76,53 @@ app.use(
   })
 );
 
-let auth = require('./auth')(app); // To import Authentication Logic defined in auth.js
-const passport = require('passport'); // to require passport Module
-require('./passport'); // To import passport.js
+// AUTHENTICATION & PASSPORT SETUP
+let auth = require('./auth')(app); // Importing authentication logic
+const passport = require('passport'); // For user authentication
+require('./passport'); // Importing passport strategies
 
-// Integration von Mongoose in die REST-API
-const mongoose = require('mongoose'); // Mongoose package
-const Models = require('./models.js'); // Mongoose-Models definded in models.js
-const Movies = Models.Movie; // Model name defined in models.js
-const Users = Models.User; // Model name defined in models.js
-
-// Connection to HEROKU DATABASE - allows Mongoose to connect to db (to perform CRUD operations on the containing documents)
+// MONGOOSE CONNECTION TO DATABASE
+/**
+ * @description Establish a connection to the MongoDB database.
+ * @see ConnectionURI should be defined in environment variables.
+ */
 mongoose.connect(process.env.ConnectionURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-// Server-Side Validation with Express Validator Library
+// SERVER-SIDE-INPUT-VALIDATION   (with Express Validator Library)
 const { check, validationResult } = require('express-validator');
-// createWriteStream() = fs function fo create a write stream (in append mode)
+
+// LOGGER-SETUP  (using Morgan Middleware)
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
   flags: 'a',
 });
-// setup the logger ( using Morgan Middleware)
 app.use(morgan('combined', { stream: accessLogStream }));
-// Express method that mounts middleware functions to a specific path.
 
-// ****************************************************************************************************
-// DOCUMENTATION Endpoint
+// STATIC-DOCUMENTATION  //////////////
+/**
+ * @description Serves static documentation files at /documentation endpoint (from the "public" directory)
+ */
 app.use(
   '/documentation',
   express.static('public', { index: 'documentation.html' })
-  // { index: 'documentation.html' } = options object. It specifies that when a directory is requested,
-  // Express should look for a file named "documentation.html" in that directory(public) and serve it as the default index file
 );
 
-// *****************************************************************************************************
-// CREATE / POST requests
-// *****************************************************************************************************
-
-// REGISTER NEW USER
-// We’ll expect JSON in this format
-// { ID: Integer, Username: String, Password: String, Email: String, Birthday: Date }
-
+// USER-REGISTRATION  //////////////
+/**
+ * @name POST /users
+ * @description Registers a new user
+ * @function
+ * @memberof module:routes/users
+ * @param {string} Username - The username of the user
+ * @param {string} Password - The user's password (hashed)
+ * @param {string} Email - The user's email address
+ * @param {Date} Birthday - The user's birthdate
+ * @returns {object} 201 - Newly created user object
+ * @returns {object} 400 - User already exists
+ * @returns {object} 422 - Validation error
+ */
 app.post(
   '/users',
   [
@@ -127,49 +169,71 @@ app.post(
       });
   }
 );
-// ADD MOVIE to FavoriteMovies
-app.post(
-  '/users/:Username/movies/:MovieID',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    const { Username, MovieID } = req.params;
-    if (req.user.Username !== req.params.Username) {
-      return res.status(400).send('Permission denied');
-    }
-    Users.findOne({ Username })
-      .then((user) => {
-        if (!user) {
-          return res.status(404).send('User not found');
-        }
-        return Users.findOneAndUpdate(
-          { Username },
-          { $addToSet: { FavoriteMovies: MovieID } },
-          { new: true }
-        );
-      })
-      .then((updatedUser) => {
-        res
-          .status(200)
-          .send(
-            `New Favorite Movie ${MovieID} was added. \n Updated Favorite Movies of ${updatedUser.Username}:\n[ ${updatedUser.FavoriteMovies} ]`
-          );
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send('Error: ' + error);
-      });
-  }
-);
 
-// *****************************************************************************************************
-// READ / GET requests
-// *****************************************************************************************************
-// HOME
+// ADD-TO-FAVORITES  //////////////
+/**
+ * Add a movie to a user's favorite list.
+ * @name POST /users/:Username/movies/:MovieID
+ * @function
+ * @memberof module:routes/users
+ * @param {string} req.params.Username - The user's username
+ * @param {string} req.params.MovieID - The movie ID to add
+ * @returns {string} - Confirmation message with updated favorite movies
+ * @throws {Error} - If user is not found or other error occurs
+ */
+// app.post(
+//   '/users/:Username/movies/:MovieID',
+//   passport.authenticate('jwt', { session: false }),
+//   (req, res) => {
+//     const { Username, MovieID } = req.params;
+//     if (req.user.Username !== req.params.Username) {
+//       return res.status(400).send('Permission denied');
+//     }
+//     Users.findOne({ Username })
+//       .then((user) => {
+//         if (!user) {
+//           return res.status(404).send('User not found');
+//         }
+//         return Users.findOneAndUpdate(
+//           { Username },
+//           { $addToSet: { FavoriteMovies: MovieID } },
+//           { new: true }
+//         );
+//       })
+//       .then((updatedUser) => {
+//         res
+//           .status(200)
+//           .send(
+//             `New Favorite Movie ${MovieID} was added. \n Updated Favorite Movies of ${updatedUser.Username}:\n[ ${updatedUser.FavoriteMovies} ]`
+//           );
+//       })
+//       .catch((error) => {
+//         console.error(error);
+//         res.status(500).send('Error: ' + error);
+//       });
+//   }
+// );
+
+// GET-WELCOME  //////////////
+/**
+ * Welcome message at the root endpoint.
+ * @name GET /
+ * @function
+ * @returns {string} - Welcome message
+ */
 app.get('/', (req, res) => {
   res.send('Welcome to my kraftFlix app!');
 });
 
-// All USERS
+// GET-ALL-USERS  //////////////
+/**
+ * Get all users.
+ * @name GET /users
+ * @function
+ * @memberof module:routes/users
+ * @returns {Object[]} - Array of user objects
+ * @throws {Error} - If retrieval fails
+ */
 app.get(
   '/users',
   passport.authenticate('jwt', { session: false }),
@@ -185,7 +249,13 @@ app.get(
   }
 );
 
-// USER by USERNAME
+// GET-SINGLE-USER  (by Username)  //////////////
+/**
+ * @function GET /users/:Username
+ * @description Retrieves data about a user by username
+ * @param {string} Username - The username of the user
+ * @returns {object} - User data object
+ */
 app.get(
   '/users/:Username',
   passport.authenticate('jwt', { session: false }),
@@ -201,7 +271,12 @@ app.get(
   }
 );
 
-// All MOVIES
+// GET-ALL-MOVIES  //////////////
+/**
+ * @function GET /movies
+ * @description Retrieves a list of all movies
+ * @returns {array} - List of all movie objects
+ */
 app.get(
   '/movies',
   // passport.authenticate('jwt', { session: false }),
@@ -218,7 +293,13 @@ app.get(
   }
 );
 
-// MOVIE by TITLE
+// GET-SINGLE-MOVIE   (by title)  //////////////
+/**
+ * @function GET /movies/:Title
+ * @description Retrieves data about a single movie by title
+ * @param {string} Title - The title of the movie
+ * @returns {object} - Movie data object
+ */
 app.get(
   '/movies/:Title',
   passport.authenticate('jwt', { session: false }),
@@ -234,7 +315,11 @@ app.get(
   }
 );
 
-// DIRECTOR by NAME
+// GET-DIRECTOR   (by name)  //////////////
+/**
+ * @function GET /movies/directors/:directorName
+ * @description Gets information about director by by its name
+ */
 app.get(
   '/movies/directors/:directorName',
   passport.authenticate('jwt', { session: false }),
@@ -250,7 +335,11 @@ app.get(
   }
 );
 
-// GENRE by NAME
+// GET-GENRE   (by name)  //////////////
+/**
+ * @function GET /movies/genres/:genreName
+ * @description Gets information about director by by its name
+ */
 app.get(
   '/movies/genres/:genreName',
   passport.authenticate('jwt', { session: false }),
@@ -270,19 +359,17 @@ app.get(
 // Update / PUT requests
 // *****************************************************************************************************
 
-// UPDATE USER DATA by USERNAME
-// expect JSON in this format
-/* 
-{
-  Username: String,
-  (required)
-  Password: String,
-  (required)
-  Email: String,
-  (required)
-  Birthday: Date
-}
-*/
+// UPDATE USER  //////////////
+/**
+ * Update a user's data by username.
+ * @name PUT /users/:Username
+ * @function
+ * @memberof module:routes/users
+ * @param {string} req.params.Username - The username of the user to update
+ * @param {Object} req.body - The updated user data
+ * @returns {Object} - Updated user object
+ * @throws {Error} - If user is not found or other error occurs
+ */
 app.put(
   '/users/:Username',
   [
@@ -332,7 +419,14 @@ app.put(
   }
 );
 
-// Add a movie to a user's list of favorites
+// ADD-FAVORITE-MOVIE  //////////////
+/**
+ * @function POST /users/:Username/movies/:MovieID
+ * @description Adds a movie to the user's list of favorite movies
+ * @param {string} Username - The username of the user
+ * @param {string} MovieID - The ID of the movie
+ * @returns {object} - Updated user data object with the favorite movies
+ */
 app.post(
   '/users/:Username/movies/:MovieID',
   passport.authenticate('jwt', { session: false }),
@@ -354,10 +448,14 @@ app.post(
   }
 );
 
-// *****************************************************************************************************
-// DELETE / DELETE requests
-// *****************************************************************************************************
-// DELETE MOVIE from FavoriteMovies
+// DELETE-FAVORITE-MOVIE  //////////////
+/**
+ * @function DELETE /users/:Username/movies/:MovieID
+ * @description Removes a movie from the user's list of favorite movies
+ * @param {string} Username - The username of the user
+ * @param {string} MovieID - The ID of the movie to remove
+ * @returns {object} - Updated user data object with the remaining favorite movies
+ */
 app.delete(
   '/users/:Username/movies/:MovieID',
   passport.authenticate('jwt', { session: false }),
@@ -391,7 +489,16 @@ app.delete(
   }
 );
 
-// DELETE USER by USERNAME
+// DELETE-USER  (by Username)  //////////////
+/**
+ * Delete a user by username.
+ * @name DELETE /users/:Username
+ * @function
+ * @memberof module:routes/users
+ * @param {string} req.params.Username - The username of the user to delete
+ * @returns {string} - Confirmation message
+ * @throws {Error} - If user is not found or other error occurs
+ */
 app.delete(
   '/users/:Username',
   passport.authenticate('jwt', { session: false }),
@@ -413,14 +520,20 @@ app.delete(
       });
   }
 );
-// *******************************************************************************************************
-// Error Handling with Express
-// *******************************************************************************************************
+
+// ERROR-HANDLING (with Express) //////////////
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
 
+// START-SERVER  //////////////
+/**
+ * Start the server and listen for incoming requests on a specified port.
+ * @description Initializes the server on a specified port, either from an environment variable or defaulting to 8080.
+ * @constant
+ * @type {number}
+ */
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
   console.log('Listening on Port ' + port);
