@@ -1,3 +1,5 @@
+// index.js  //////////////
+
 /**
  * @file index.js - Main file for the movie API built with Node.js and Express
  * @requires express
@@ -14,7 +16,7 @@
  * @requires ./models
  */
 
-// Importing required modules  //////////////
+// CORE MODULES AND THIRD-PARTY LIBRARIES (IMPORTS)  ////////////
 const express = require('express'); // Express framework
 const bodyParser = require('body-parser'); // To parse JSON bodies
 const uuid = require('uuid'); // For generating unique IDs
@@ -23,12 +25,16 @@ const fs = require('fs'); // File system module for logging
 const path = require('path'); // Path utilities
 const cors = require('cors'); // For enabling CORS
 const mongoose = require('mongoose'); // Mongoose package - MongoDB ORM
+
+// DATABASE MODELS IMPORT  ////////////
 const Models = require('./models.js'); // Mongoose models
 
-const app = express(); // Initialize Express app
+// EXPRESS APP INITIALIZATION  ////////////
+const app = express();
 
-const Movies = Models.Movie; // Movie model from models.js
-const Users = Models.User; // User model from models.js
+// ASSIGNING MODELS TO VARIABLES ////////////
+const Movies = Models.Movie; // Access Movie model from models.js
+const Users = Models.User;
 
 // BODY-PARSER MIDDLEWARE  //////////////
 /**

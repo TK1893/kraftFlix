@@ -1,4 +1,4 @@
-// models.js
+// models.js  //////////////////////
 
 /**
  * @file models.js - Defines the Mongoose schemas and models for movies and users in the application.
@@ -6,6 +6,7 @@
  * @requires bcrypt - bcrypt is used for hashing and comparing passwords securely
  */
 
+// LIBRARY IMPORTS  ///////////////
 const mongoose = require('mongoose'); // Import Mongoose library
 const bcrypt = require('bcrypt'); // Import bcrypt library for password hashing
 
