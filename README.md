@@ -4,28 +4,6 @@ This is a RESTful API application created with Node.js and Express that allows u
 
 ## Table of Contents
 
-**1. Technologies and Packages**
-
-**2. Project Structure**
-
-**3. Authentication and Security**
-
-**4. API Endpoints**
-
-**5. Error Handling**
-
-**6. CORS**
-
-**7. Database**
-
-**8. Deployment**
-
-**9. How to Set Up**
-
-**10. License**
-
-**11. Author**
-
 1. [Technologies and Packages](#technologies-and-packages)
 2. [Project Structure](#project-structure)
 3. [Authentication and Security](#authentication-and-security)
@@ -34,7 +12,7 @@ This is a RESTful API application created with Node.js and Express that allows u
 6. [CORS](#cors)
 7. [Database](#database)
 8. [Deployment](#deployment)
-9. [Setup](#setup)
+9. [Installation & Setup](#installation-&-setup)
 10. [License](#license)
 11. [Author](#author)
 
@@ -107,7 +85,7 @@ Here are the primary API endpoints for this application:
 **Description**: Registers a new user with the provided information.
 **Request body**:
 
-```bash
+```json
 {
   "Username": "required, min 5 characters",
   "Password": "required",
@@ -213,7 +191,7 @@ This captures server errors, returning an appropriate status code and error mess
 
 ---
 
-### CORS
+## CORS
 
 The API restricts access to specified origins. The allowed origins are defined in the allowedOrigins array:
 
@@ -229,13 +207,13 @@ let allowedOrigins = [
 
 ---
 
-### Database
+## Database
 
 - MongoDB is used as the database to store user and movie data.
 
-#### Mongoose Models
+### Mongoose Models
 
-- Movie:
+#### Movie:
 
 - Title: (String, required)
 - Description: (String, required)
@@ -245,7 +223,7 @@ let allowedOrigins = [
 - ImageUrl: (String)
 - Featured: (Boolean)
 
-- User:
+#### User:
 
 - Username: (String, required)
 - Password: (String, required, stored as a hashed value)
@@ -255,13 +233,13 @@ let allowedOrigins = [
 
 ---
 
-### Deployment
+## Deployment
 
 - The API is deployed to Heroku
 
 ---
 
-## How to Set Up
+## Installation and Setup
 
 ### Prerequisites
 
