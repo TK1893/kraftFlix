@@ -21,7 +21,7 @@ This is a RESTful API application created with Node.js and Express that allows u
 
 The following technologies and packages were used to build this API:
 
-**Node.js** - JavaScript runtime environment for server-side applications.
+`**Node.js**` - JavaScript runtime environment for server-side applications.
 
 **Express** - Web framework for Node.js.
 
@@ -232,7 +232,7 @@ MongoDB is used as the database to store user and movie data.
 
 ### Prerequisites
 
-- Node.js and npm installed.
+- [Node.js](https://nodejs.org/en) and [npm](https://docs.npmjs.com/) installed.
 - MongoDB database instance available.
 
 ### Steps to Install the Project
@@ -266,3 +266,5 @@ This project is open-source under the MIT License.
 ## Author
 
 Developed by Tobias Kraft as a part of an API development project for managing movie data and user information.
+
+[AngularJS](https://angular.dev/)
