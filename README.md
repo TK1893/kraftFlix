@@ -34,13 +34,14 @@ The following technologies and packages were used to build this API:
 
 - **Node.js:**  
   JavaScript runtime environment for server-side applications.
-- **Express:**
+- **Express:**  
   Web framework for Node.js.
-- MongoDB - NoSQL database.
-- Mongoose - ODM (Object Data Modeling) library for MongoDB.
-- Passport: Authentication middleware for Node.js.
+- **MongoDB**:  
+  NoSQL database.
+- **Mongoose** - emsp ODM (Object Data Modeling) library for MongoDB.
+- **Passport** Authentication middleware for Node.js.
 
-- passport-local: Strategy for local username and password authentication.
+- **passport-local**: Strategy for local username and password authentication.
 - passport-jwt: Strategy for authenticating using JWT.
 
 - bcrypt: Library for hashing passwords.
