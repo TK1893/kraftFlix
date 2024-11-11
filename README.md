@@ -263,7 +263,7 @@ MongoDB is used as the database to store user and movie data.
 
 ## Deployment
 
-The API is deployed to Heroku
+The API is deployed to[Heroku](https://www.heroku.com/)
 
 ---
 
