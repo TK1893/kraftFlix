@@ -201,7 +201,7 @@ Here are the primary API endpoints for this application:
 
 #### `4. Get Director Information`
 
-**'GET /movies/directors/:directorName'**  
+**`GET /movies/directors/:directorName`**  
 **Description**: Retrieves information about a specific director.  
 **Protected**: Yes, requires a valid JWT.
 
@@ -225,7 +225,7 @@ Here are the primary API endpoints for this application:
 
 The API restricts access to specified origins. The allowed origins are defined in the allowedOrigins array:
 
-```bash
+```jspn
 let allowedOrigins = [
     'http://localhost:4200',
     'http://localhost:8080',
@@ -263,7 +263,7 @@ MongoDB is used as the database to store user and movie data.
 
 ## Deployment
 
-The API is deployed to[Heroku](https://www.heroku.com/)
+The API is deployed to [Heroku](https://www.heroku.com/)
 
 ---
 
