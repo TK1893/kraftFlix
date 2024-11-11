@@ -29,28 +29,44 @@ JavaScript runtime environment for server-side applications.
 
 Web framework for Node.js.
 
-**`Express`** - Web framework for Node.js.
+### `MongoDB`
 
-**`MongoDB`** - NoSQL database.
+NoSQL database.
 
-**`Mongoose`** - ODM (Object Data Modeling) library for MongoDB.
+### `Mongoose`
 
-**`Passport`** - Authentication middleware for Node.js.
+ODM (Object Data Modeling) library for MongoDB.
 
-- **passport-local** - Strategy for local username and password authentication.
-- **passport-jwt** - Strategy for authenticating using JWT.
+### `Passport`
 
-**`bcrypt`** - Library for hashing passwords.
+Authentication middleware for Node.js.
 
-**`jsonwebtoken`** - For creating and verifying JSON Web Tokens (JWTs).
+- **`passport-local`** - Strategy for local username and password authentication.
+- **`passport-jwt`** - Strategy for authenticating using JWT.
 
-**`CORS`** - Cross-Origin Resource Sharing, enables restricted resources on a web page to be requested from another domain.
+### `bcrypt`
 
-**Express Validator** - Middleware for request data validation.
+Library for hashing passwords
 
-**Morgan** - Logging middleware to capture requests.
+### `jsonwebtoken`
 
-**dotenv** - For managing environment variables (e.g., MongoDB connection URI, JWT secrets).
+For creating and verifying JSON Web Tokens (JWTs).
+
+### `CORS`
+
+Cross-Origin Resource Sharing, enables restricted resources on a web page to be requested from another domain.
+
+### `Express Validator`
+
+Middleware for request data validation.
+
+### `Morgan`
+
+Logging middleware to capture requests.
+
+### `dotenv`
+
+For managing environment variables (e.g., MongoDB connection URI, JWT secrets).
 
 ---
 
