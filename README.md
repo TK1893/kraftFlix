@@ -26,6 +26,18 @@ This is a RESTful API application created with Node.js and Express that allows u
 
 **11. Author**
 
+1. [Technologies and Packages](#technologies-and-packages)
+2. [Project Structure](#project-structure)
+3. [Authentication and Security](#authentication-and-security)
+4. [API Endpoints](#api-endpoints)
+5. [Error Handling](#error-handling)
+6. [CORS](#cors)
+7. [Database](#database)
+8. [Deployment](#deployment)
+9. [Setup](#setup)
+10. [License](#license)
+11. [Author](#author)
+
 ---
 
 ## Technologies and Packages
