@@ -237,10 +237,10 @@ MongoDB is used as the database to store user and movie data.
 
 ### Steps to Install the Project
 
-**1. Clone the Repository**:
+**1. Clone the Repository**: [https://github.com/TK1893/kraftFlix.git]
 
 ```bash
-  git clone [https://github.com/TK1893/kraftFlix.git](https://github.com/TK1893/kraftFlix.git)
+  git clone https://github.com/TK1893/kraftFlix.git
 ```
 
 **2. Open the Project Folder**:
