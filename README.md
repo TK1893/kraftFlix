@@ -271,24 +271,25 @@ The API is deployed to Heroku
 
 ### Prerequisites
 
-- `[Node.js](https://nodejs.org/en)` and [npm](https://docs.npmjs.com/) installed.
+- [Node.js](https://nodejs.org/en) and [npm](https://docs.npmjs.com/) installed.
 - [MongoDB](https://www.mongodb.com/) database instance available.
 
 ### Steps to Install the Project
 
-**1. Clone the Repository**: [https://github.com/TK1893/kraftFlix.git]
+#### `1. Clone the Repository`
 
 ```bash
   git clone https://github.com/TK1893/kraftFlix.git
+
 ```
 
-**2. Open the Project Folder**:
+#### `2. Open the Project Folder`
 
 ```bash
  cd movie_api
 ```
 
-**3. Install Dependencies**:
+#### `3. Install Dependencies`
 
 ```bash
 npm install
@@ -305,5 +306,3 @@ This project is open-source under the MIT License.
 ## Author
 
 Developed by Tobias Kraft as a part of an API development project for managing movie data and user information.
-
-[AngularJS](https://angular.dev/)
