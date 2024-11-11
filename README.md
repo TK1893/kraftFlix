@@ -34,39 +34,28 @@ The following technologies and packages were used to build this API:
 
 **Node.js** - JavaScript runtime environment for server-side applications.
 
-**Express:** - Web framework for Node.js.
+**Express** - Web framework for Node.js.
 
-**MongoDB**  
-NoSQL database.
+**MongoDB** - NoSQL database.
 
-**Mongoose**  
-ODM (Object Data Modeling) library for MongoDB.
+**Mongoose** - ODM (Object Data Modeling) library for MongoDB.
 
-**Passport**  
-Authentication middleware for Node.js.
+**Passport** - Authentication middleware for Node.js.
 
-- **passport-local**  
-  Strategy for local username and password authentication.
-- **passport-jwt**  
-  Strategy for authenticating using JWT.
+- **passport-local** - Strategy for local username and password authentication.
+- **passport-jwt** - Strategy for authenticating using JWT.
 
-**bcrypt**  
-Library for hashing passwords.
+**bcrypt** - Library for hashing passwords.
 
-**jsonwebtoken**  
-For creating and verifying JSON Web Tokens (JWTs).
+**jsonwebtoken** - For creating and verifying JSON Web Tokens (JWTs).
 
-**CORS**  
-Cross-Origin Resource Sharing, enables restricted resources on a web page to be requested from another domain.
+**CORS** - Cross-Origin Resource Sharing, enables restricted resources on a web page to be requested from another domain.
 
-**Express Validator**  
-Middleware for request data validation.
+**Express Validator** - Middleware for request data validation.
 
-**Morgan**  
-Logging middleware to capture requests.
+**Morgan** - Logging middleware to capture requests.
 
-**dotenv**  
-For managing environment variables (e.g., MongoDB connection URI, JWT secrets).
+**dotenv** - For managing environment variables (e.g., MongoDB connection URI, JWT secrets).
 
 ---
 
