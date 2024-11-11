@@ -119,11 +119,11 @@ Here are the primary API endpoints for this application:
 
 #### `1. Register a New User`
 
-**POST /users**  
+**`POST /users`**  
 **Description**: Registers a new user with the provided information.  
 **Request body**:
 
-```json
+```bash
 {
   "Username": "required, min 5 characters",
   "Password": "required",
@@ -134,11 +134,11 @@ Here are the primary API endpoints for this application:
 
 #### `2. User Login`
 
-**POST /login**  
+**`POST /login`**  
 **Description**: Authenticates the user and returns a JWT for access to protected routes.  
 **Request body**:
 
-```json
+```bash
 {
   "Username": "required",
   "Password": "required"
@@ -147,24 +147,24 @@ Here are the primary API endpoints for this application:
 
 #### `3. Get All Users`
 
-**GET /users**  
+**`GET /users`**  
  **Description**: Retrieves a list of all registered users.  
  **Protected**: Yes, requires a valid JWT.
 
 #### `4. Get User by Username`
 
-**GET /users/:Username**  
+**`GET /users/:Username`**  
 **Description**: Retrieves detailed information about a specific user by username.  
 **Protected**: Yes, requires a valid JWT.
 
 #### `5. Update User Information`
 
-**PUT /users/:Username**  
+**`PUT /users/:Username`**  
 **Description**: Updates the user’s details.  
 **Protected**: Yes, requires a valid JWT.  
 **Request body**:
 
-```json
+```bash
 {
   "Username": "optional",
   "Password": "optional",
@@ -175,7 +175,7 @@ Here are the primary API endpoints for this application:
 
 #### `6. Delete User`
 
-**DELETE /users/:Username**  
+**`DELETE /users/:Username`**  
 **Description**: Removes a user from the database.  
 **Protected**: Yes, requires a valid JWT.
 
@@ -183,25 +183,25 @@ Here are the primary API endpoints for this application:
 
 #### `1. Get All Movies`
 
-**GET /movies**  
+**`GET /movies`**  
 **Description**: Retrieves a list of all movies in the database.  
 **Protected**: Yes, requires a valid JWT.
 
 #### `2. Get Movie by Title`
 
-**GET /movies/:Title**  
+**`GET /movies/:Title`**  
 **Description**: Retrieves information about a specific movie by title.  
 **Protected**: Yes, requires a valid JWT.
 
 #### `3. Get Genre Information`
 
-**GET /movies/genres/:genreName**  
+**`GET /movies/genres/:genreName`**  
 **Description**: Retrieves details about a specific genre.  
 **Protected**: Yes, requires a valid JWT.
 
 #### `4. Get Director Information`
 
-**GET /movies/directors/:directorName**  
+**'GET /movies/directors/:directorName'**  
 **Description**: Retrieves information about a specific director.  
 **Protected**: Yes, requires a valid JWT.
 
@@ -209,13 +209,13 @@ Here are the primary API endpoints for this application:
 
 #### `1. Add Movie to Favorites`
 
-**POST /users/:Username/movies/:MovieID**  
+**`POST /users/:Username/movies/:MovieID`**  
 **Description**: Adds a movie to the user’s list of favorite movies.  
 **Protected**: Yes, requires a valid JWT.
 
 #### `2. Remove Movie from Favorites`
 
-**DELETE /users/:Username/movies/:MovieID**  
+**`DELETE /users/:Username/movies/:MovieID`**  
 **Description**: Removes a movie from the user’s list of favorite movies.  
 **Protected**: Yes, requires a valid JWT.
 
