@@ -4,15 +4,27 @@ This is a RESTful API application created with Node.js and Express that allows u
 
 ## Table of Contents
 
-- Technologies and Packages
-- Project Structure
-- Authentication and Security
-- API Endpoints
-- Error Handling
-- CORS
-- Database
-- Deployment
-- How to Set Up
+**1. Technologies and Packages**
+
+**2. Project Structure**
+
+**3. Authentication and Security**
+
+**4. API Endpoints**
+
+**5. Error Handling**
+
+**6. CORS**
+
+**7. Database**
+
+**8. Deployment**
+
+**9. How to Set Up**
+
+**10. License**
+
+**11. Author**
 
 ---
 
@@ -20,8 +32,10 @@ This is a RESTful API application created with Node.js and Express that allows u
 
 The following technologies and packages were used to build this API:
 
-- Node.js: JavaScript runtime environment for server-side applications.
-- Express: Web framework for Node.js.
+- **Node.js:**
+  JavaScript runtime environment for server-side applications.
+- **Express:**
+  Web framework for Node.js.
 - MongoDB - NoSQL database.
 - Mongoose - ODM (Object Data Modeling) library for MongoDB.
 - Passport: Authentication middleware for Node.js.
@@ -237,7 +251,7 @@ let allowedOrigins = [
 - Node.js and npm installed.
 - MongoDB database instance available.
 
-### Steps to Install and Run the API
+### Steps to Install the Project
 
 1. Clone the Repository:  
    git clone [https://github.com/TK1893/kraftFlix.git](https://github.com/TK1893/kraftFlix.git)
