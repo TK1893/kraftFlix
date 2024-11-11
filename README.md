@@ -4,17 +4,16 @@ This is a RESTful API application created with Node.js and Express that allows u
 
 ## Table of Contents
 
-1. [Technologies and Packages](#technologies-and-packages)
-2. [Project Structure](#project-structure)
-3. [Authentication and Security](#authentication-and-security)
-4. [API Endpoints](#api-endpoints)
-5. [Error Handling](#error-handling)
-6. [CORS](#cors)
-7. [Database](#database)
-8. [Deployment](#deployment)
-9. [Installation & Setup](#installation-&-setup)
-10. [License](#license)
-11. [Author](#author)
+- [Technologies and Packages](#technologies-and-packages)
+- [Project Structure](#project-structure)
+- [Authentication and Security](#authentication-and-security)
+- [API Endpoints](#api-endpoints)
+- [CORS](#cors)
+- [Database](#database)
+- [Deployment](#deployment)
+- [Installation & Setup](#installation-and-setup)
+- [License](#license)
+- [Author](#author)
 
 ---
 
@@ -82,7 +81,7 @@ Here are the primary API endpoints for this application:
 #### 1. Register a New User
 
 **POST /users**  
-**Description**: Registers a new user with the provided information.
+**Description**: Registers a new user with the provided information.  
 **Request body**:
 
 ```json
@@ -97,97 +96,89 @@ Here are the primary API endpoints for this application:
 #### 2. User Login
 
 **POST /login**  
-**Description**: Authenticates the user and returns a JWT for access to protected routes. **Request body**:
+**Description**: Authenticates the user and returns a JWT for access to protected routes.  
+**Request body**:
 
-```bash
+```json
 {
   "Username": "required",
   "Password": "required"
 }
 ```
 
-3. Get All Users
-   GET /users
-   Description: Retrieves a list of all registered users.
-   Protected: Yes, requires a valid JWT.
+#### 3. Get All Users
 
-4. Get User by Username
-   GET /users/:Username
-   Description: Retrieves detailed information about a specific user by username.
-   Protected: Yes, requires a valid JWT.
+**GET /users**  
+ **Description**: Retrieves a list of all registered users.  
+ **Protected**: Yes, requires a valid JWT.
 
-5. Update User Information
-   PUT /users/:Username
-   Description: Updates the user’s details.
+#### 4. Get User by Username
 
-Protected: Yes, requires a valid JWT.
-Request body:
+**GET /users/:Username**  
+**Description**: Retrieves detailed information about a specific user by username.  
+**Protected**: Yes, requires a valid JWT.
+
+#### 5. Update User Information
+
+**PUT /users/:Username**  
+**Description**: Updates the user’s details.  
+**Protected**: Yes, requires a valid JWT.  
+**Request body**:
+
+```json
 {
-
-"Username": "optional",
-
-"Password": "optional",
-
-"Email": "optional",
-
-"Birthday": "optional"
-
+  "Username": "optional",
+  "Password": "optional",
+  "Email": "optional",
+  "Birthday": "optional"
 }
+```
 
-6. Delete User
-   DELETE /users/:Username
-   Description: Removes a user from the database.
-   Protected: Yes, requires a valid JWT.
+#### 6. Delete User
+
+**DELETE /users/:Username**  
+**Description**: Removes a user from the database.  
+**Protected**: Yes, requires a valid JWT.
 
 ### Movies
 
-1.  Get All Movies
-    GET /movies
-    Description: Retrieves a list of all movies in the database.
-    Protected: Yes, requires a valid JWT.
-2.  Get Movie by Title
-    GET /movies/:Title
-    Description: Retrieves information about a specific movie by title.
-    Protected: Yes, requires a valid JWT.
-3.  Get Genre Information
-    GET /movies/genres/:genreName
-    Description: Retrieves details about a specific genre.
-    Protected: Yes, requires a valid JWT.
-4.  Get Director Information
-    GET /movies/directors/:directorName
-    Description: Retrieves information about a specific director.
-    Protected: Yes, requires a valid JWT.
+#### 1. Get All Movies
+
+**GET /movies**  
+**Description**: Retrieves a list of all movies in the database.  
+**Protected**: Yes, requires a valid JWT.
+
+#### 2. Get Movie by Title
+
+**GET /movies/:Title**  
+**Description**: Retrieves information about a specific movie by title.  
+**Protected**: Yes, requires a valid JWT.
+
+#### 3. Get Genre Information
+
+**GET /movies/genres/:genreName**  
+**Description**: Retrieves details about a specific genre.  
+**Protected**: Yes, requires a valid JWT.
+
+#### 4. Get Director Information
+
+**GET /movies/directors/:directorName**  
+**Description**: Retrieves information about a specific director.  
+**Protected**: Yes, requires a valid JWT.
 
 ### Favorite Movies
 
-1.  Add Movie to Favorites
-    POST /users/:Username/movies/:MovieID
-    Description: Adds a movie to the user’s list of favorite movies.
-    Protected: Yes, requires a valid JWT.
-2.  Remove Movie from Favorites
-    DELETE /users/:Username/movies/:MovieID
-    Description: Removes a movie from the user’s list of favorite movies.
-    Protected: Yes, requires a valid JWT.
+#### 1. Add Movie to Favorites
 
----
+**POST /users/:Username/movies/:MovieID**  
+**Description**: Adds a movie to the user’s list of favorite movies.  
+**Protected**: Yes, requires a valid JWT.
 
-## Error Handling
+#### 2. Remove Movie from Favorites
 
-The API includes centralized error handling. Errors are managed through an Express middleware function:
-
-app.use((err, req, res, next) => {
-
-res.status(err.status || 500).json({
-
-message: err.message || 'Internal Server Error',
-
-error: err
-
-});
-
-});
-
-This captures server errors, returning an appropriate status code and error message to the client. Validation errors, authentication issues, and database errors are handled specifically to improve user feedback.
+**DELETE /users/:Username/movies/:MovieID**  
+**Description**: Removes a movie from the user’s list of favorite movies.  
+**Protected**: Yes, requires a valid JWT.
 
 ---
 
@@ -195,41 +186,39 @@ This captures server errors, returning an appropriate status code and error mess
 
 The API restricts access to specified origins. The allowed origins are defined in the allowedOrigins array:
 
+```bash
 let allowedOrigins = [
-
-'http://localhost:4200',
-
-'http://localhost:8080',
-
-...
-
+    'http://localhost:4200',
+    'http://localhost:8080',
+    ...
 ];
+```
 
 ---
 
 ## Database
 
-- MongoDB is used as the database to store user and movie data.
+MongoDB is used as the database to store user and movie data.
 
 ### Mongoose Models
 
 #### Movie:
 
-- Title: (String, required)
-- Description: (String, required)
-- Genre: (Object, with Name and Description)
-- Director: (Object, with Name and Bio)
-- Actors: (Array of Strings)
-- ImageUrl: (String)
-- Featured: (Boolean)
+- **Title**: (String, required)
+- **Description**: (String, required)
+- **Genre**: (Object, with Name and Description)
+- **Director**: (Object, with Name and Bio)
+- **Actors**: (Array of Strings)
+- **ImageUrl**: (String)
+- **Featured**: (Boolean)
 
 #### User:
 
-- Username: (String, required)
-- Password: (String, required, stored as a hashed value)
-- Email: (String, required)
-- Birthdate: (Date)
-- FavoriteMovies: (Array of Movie ObjectIds, references Movie model)
+- **Username**: (String, required)
+- **Password**: (String, required, stored as a hashed value)
+- **Email**: (String, required)
+- **Birthdate**: (Date)
+- **FavoriteMovies**: (Array of Movie ObjectIds, references Movie model)
 
 ---
 
@@ -248,15 +237,23 @@ let allowedOrigins = [
 
 ### Steps to Install the Project
 
-1. Clone the Repository:
-   git clone [https://github.com/TK1893/kraftFlix.git](https://github.com/TK1893/kraftFlix.git)
+**1. Clone the Repository**:
 
-2. Open the Project Folder
+```bash
+  git clone [https://github.com/TK1893/kraftFlix.git](https://github.com/TK1893/kraftFlix.git)
+```
 
-cd movie_api
+**2. Open the Project Folder**:
 
-3. Install Dependencies
-   npm install
+```bash
+ cd movie_api
+```
+
+**3. Install Dependencies**:
+
+```bash
+npm install
+```
 
 ---
 
@@ -269,7 +266,3 @@ This project is open-source under the MIT License.
 ## Author
 
 Developed by Tobias Kraft as a part of an API development project for managing movie data and user information.
-
-```
-
-```
