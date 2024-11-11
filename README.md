@@ -241,7 +241,7 @@ MongoDB is used as the database to store user and movie data.
 
 ### Mongoose Models
 
-#### Movie:
+#### `Movie`
 
 - **Title**: (String, required)
 - **Description**: (String, required)
@@ -251,7 +251,7 @@ MongoDB is used as the database to store user and movie data.
 - **ImageUrl**: (String)
 - **Featured**: (Boolean)
 
-#### User:
+#### `User`
 
 - **Username**: (String, required)
 - **Password**: (String, required, stored as a hashed value)
@@ -263,7 +263,7 @@ MongoDB is used as the database to store user and movie data.
 
 ## Deployment
 
-- The API is deployed to Heroku
+The API is deployed to Heroku
 
 ---
 
@@ -271,8 +271,8 @@ MongoDB is used as the database to store user and movie data.
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/en) and [npm](https://docs.npmjs.com/) installed.
-- MongoDB database instance available.
+- `[Node.js](https://nodejs.org/en)` and [npm](https://docs.npmjs.com/) installed.
+- [MongoDB](https://www.mongodb.com/) database instance available.
 
 ### Steps to Install the Project
 
