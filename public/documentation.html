@@ -1,296 +1,313 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Documentation</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="styles.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome file</title>
+    <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
-<body>
-    <div class="vstack gap-3">
-        <h1>Movie API (Kraftflix API)</h1>
-        <h2>App description
-        </h2>
-        <a href="https://github.com/TK1893/kraftFlix/blob/main/out/global.html">Code Documentation</a>
-        <p>This is the origin for the development of my
-            web application "kraftFlix".
-            <br> The app will provide users with access to information on various films, directors and genres.
-            <br> Users will be able to log in, update their personal information and create a list of their favorite
-            movies.
-        </p>
-        <h2>Features</h2>
+<body class="stackedit">
+    <div class="stackedit__html">
+        <h1 id="movie-api-kraftflix-api">Movie API (Kraftflix API)</h1>
+        <p>This is a RESTful API application created with Node.js and Express that allows users to create and manage an
+            account, browse a selection of movies, and save favorite movies to their profile. This API is protected by
+            JWT-based authentication, and data is securely stored in a MongoDB database.</p>
+        <h2 id="table-of-contents">Table of Contents</h2>
         <ul>
-            <li>Return a list of ALL movies to the user</li>
-            <li> Return data (description, genre, director, image URL, whether it’s featured or not) about a
-                single movie by title to the user</li>
-            <li>Return data about a genre (description) by name/title (e.g., “Thriller”)</li>
-            <li>Return data about a director (bio, birth year, death year) by name</li>
-            <li>Allow new users to register</li>
-            <li>Allow users to update their user info (username, password, email, date of birth)
+            <li>
+                <p><a href="#technologies-and-packages">Technologies and Packages</a></p>
             </li>
-            <li>Allow users to add a movie to their list of favorites
+            <li>
+                <p><a href="#project-structure">Project Structure</a></p>
             </li>
-            <li>Allow users to remove a movie from their list of favorites
+            <li>
+                <p><a href="#authentication-and-security">Authentication and Security</a></p>
             </li>
-            <li>Allow existing users to deregister
+            <li>
+                <p><a href="#api-endpoints">API Endpoints</a></p>
             </li>
-            <li>Allow users to see which actors star in which movies
+            <li>
+                <p><a href="#cors">CORS</a></p>
             </li>
-            <li>Allow users to view information about different actors
+            <li>
+                <p><a href="#database">Database</a></p>
             </li>
-            <li>Allow users to view more information about different movies, such as the release date and the movie
-                rating
+            <li>
+                <p><a href="#deployment">Deployment</a></p>
             </li>
-            <li>Allow users to create a “To Watch” list in addition to their “Favorite Movies” list
+            <li>
+                <p><a href="#installation-and-setup">Installation &amp; Setup</a></p>
+            </li>
+            <li>
+                <p><a href="#license">License</a></p>
+            </li>
+            <li>
+                <p><a href="#author">Author</a></p>
             </li>
         </ul>
-        <h2>Used Technologies / Tech Stack
-        </h2>
-        <p>MERN (MongoDB, Express, React, and Node.js)
+        <hr>
+        <h2 id="technologies-and-packages">Technologies and Packages</h2>
+        <p>The following technologies and packages were used to build this API:</p>
+        <h3 id="node.js"><code>Node.js</code></h3>
+        <p>JavaScript runtime environment for server-side applications.</p>
+        <h3 id="express"><code>Express</code></h3>
+        <p>Web framework for Node.js.</p>
+        <h3 id="mongodb"><code>MongoDB</code></h3>
+        <p>NoSQL database.</p>
+        <h3 id="mongoose"><code>Mongoose</code></h3>
+        <p>ODM (Object Data Modeling) library for MongoDB.</p>
+        <h3 id="passport"><code>Passport</code></h3>
+        <p>Authentication middleware for Node.js.</p>
+        <ul>
+            <li>
+                <p><strong><code>passport-local</code></strong> - Strategy for local username and password
+                    authentication.</p>
+            </li>
+            <li>
+                <p><strong><code>passport-jwt</code></strong> - Strategy for authenticating using JWT.</p>
+            </li>
+        </ul>
+        <h3 id="bcrypt"><code>bcrypt</code></h3>
+        <p>Library for hashing passwords</p>
+        <h3 id="jsonwebtoken"><code>jsonwebtoken</code></h3>
+        <p>For creating and verifying JSON Web Tokens (JWTs).</p>
+        <h3 id="cors"><code>CORS</code></h3>
+        <p>Cross-Origin Resource Sharing, enables restricted resources on a web page to be requested from another
+            domain.</p>
+        <h3 id="express-validator"><code>Express Validator</code></h3>
+        <p>Middleware for request data validation.</p>
+        <h3 id="morgan"><code>Morgan</code></h3>
+        <p>Logging middleware to capture requests.</p>
+        <h3 id="dotenv"><code>dotenv</code></h3>
+        <p>For managing environment variables (e.g., MongoDB connection URI, JWT secrets).</p>
+        <hr>
+        <h2 id="project-structure">Project Structure</h2>
+        <p>This project includes the following primary files and directories:</p>
+        <h3 id="index.js"><code>index.js</code></h3>
+        <p>Main application file, sets up the server, middleware, routes, and database connection.</p>
+        <h3 id="auth.js"><code>auth.js</code></h3>
+        <p>Defines authentication logic and integrates Passport.js.</p>
+        <h3 id="models.js"><code>models.js</code></h3>
+        <p>Defines MongoDB schemas and models for movies and users.</p>
+        <h3 id="passport.js"><code>passport.js</code></h3>
+        <p>Passport strategies for local authentication and JWT.</p>
+        <h3 id="public"><code>public/</code></h3>
+        <p>Static documentation resources, like documentation.html.</p>
+        <h3 id="log.txt"><code>log.txt</code></h3>
+        <p>Log file for request information generated by morgan.</p>
+        <hr>
+        <h2 id="authentication-and-security">Authentication and Security</h2>
+        <p>This API uses JWT (JSON Web Tokens) to manage user sessions securely. Passport.js is configured with the
+            following strategies:</p>
+        <ul>
+            <li>
+                <p><strong><code>Local Strategy</code></strong>: Handles login requests by verifying the user’s username
+                    and password.</p>
+            </li>
+            <li>
+                <p><strong><code>JWT Strategy</code></strong>: Verifies the JWT on protected routes to ensure users have
+                    valid authentication.</p>
+            </li>
+        </ul>
+        <p>Password hashing is done using bcrypt, ensuring user passwords are stored securely in the database.</p>
+        <hr>
+        <h2 id="api-endpoints">API Endpoints</h2>
+        <p>Here are the primary API endpoints for this application:</p>
+        <h3 id="user-management">User Management</h3>
+        <h4 id="register-a-new-user"><code>1. Register a New User</code></h4>
+        <p><strong><code>POST /users</code></strong></p>
+        <p><strong>Description</strong>: Registers a new user with the provided information.</p>
+        <p><strong>Request body</strong>:</p>
+        <pre class=" language-bash"><code class="prism  language-bash">
+<span class="token punctuation">{</span>
+
+<span class="token string">"Username"</span><span class="token keyword">:</span>  <span class="token string">"required, min 5 characters"</span>,
+
+<span class="token string">"Password"</span><span class="token keyword">:</span>  <span class="token string">"required"</span>,
+
+<span class="token string">"Email"</span><span class="token keyword">:</span>  <span class="token string">"required, must be a valid email"</span>,
+
+<span class="token string">"Birthday"</span><span class="token keyword">:</span>  <span class="token string">"optional"</span>
+
+<span class="token punctuation">}</span>
+
+</code></pre>
+        <h4 id="user-login"><code>2. User Login</code></h4>
+        <p><strong><code>POST /login</code></strong></p>
+        <p><strong>Description</strong>: Authenticates the user and returns a JWT for access to protected routes.</p>
+        <p><strong>Request body</strong>:</p>
+        <pre class=" language-bash"><code class="prism  language-bash">
+<span class="token punctuation">{</span>
+
+<span class="token string">"Username"</span><span class="token keyword">:</span>  <span class="token string">"required"</span>,
+
+<span class="token string">"Password"</span><span class="token keyword">:</span>  <span class="token string">"required"</span>
+
+<span class="token punctuation">}</span>
+
+</code></pre>
+        <h4 id="get-all-users"><code>3. Get All Users</code></h4>
+        <p><strong><code>GET /users</code></strong></p>
+        <p><strong>Description</strong>: Retrieves a list of all registered users.</p>
+        <p><strong>Protected</strong>: Yes, requires a valid JWT.</p>
+        <h4 id="get-user-by-username"><code>4. Get User by Username</code></h4>
+        <p><strong><code>GET /users/:Username</code></strong></p>
+        <p><strong>Description</strong>: Retrieves detailed information about a specific user by username.</p>
+        <p><strong>Protected</strong>: Yes, requires a valid JWT.</p>
+        <h4 id="update-user-information"><code>5. Update User Information</code></h4>
+        <p><strong><code>PUT /users/:Username</code></strong></p>
+        <p><strong>Description</strong>: Updates the user’s details.</p>
+        <p><strong>Protected</strong>: Yes, requires a valid JWT.</p>
+        <p><strong>Request body</strong>:</p>
+        <pre class=" language-bash"><code class="prism  language-bash">
+<span class="token punctuation">{</span>
+
+<span class="token string">"Username"</span><span class="token keyword">:</span>  <span class="token string">"optional"</span>,
+
+<span class="token string">"Password"</span><span class="token keyword">:</span>  <span class="token string">"optional"</span>,
+
+<span class="token string">"Email"</span><span class="token keyword">:</span>  <span class="token string">"optional"</span>,
+
+<span class="token string">"Birthday"</span><span class="token keyword">:</span>  <span class="token string">"optional"</span>
+
+<span class="token punctuation">}</span>
+
+</code></pre>
+        <h4 id="delete-user"><code>6. Delete User</code></h4>
+        <p><strong><code>DELETE /users/:Username</code></strong></p>
+        <p><strong>Description</strong>: Removes a user from the database.</p>
+        <p><strong>Protected</strong>: Yes, requires a valid JWT.</p>
+        <h3 id="movies">Movies</h3>
+        <h4 id="get-all-movies"><code>1. Get All Movies</code></h4>
+        <p><strong><code>GET /movies</code></strong></p>
+        <p><strong>Description</strong>: Retrieves a list of all movies in the database.</p>
+        <p><strong>Protected</strong>: Yes, requires a valid JWT.</p>
+        <h4 id="get-movie-by-title"><code>2. Get Movie by Title</code></h4>
+        <p><strong><code>GET /movies/:Title</code></strong></p>
+        <p><strong>Description</strong>: Retrieves information about a specific movie by title.</p>
+        <p><strong>Protected</strong>: Yes, requires a valid JWT.</p>
+        <h4 id="get-genre-information"><code>3. Get Genre Information</code></h4>
+        <p><strong><code>GET /movies/genres/:genreName</code></strong></p>
+        <p><strong>Description</strong>: Retrieves details about a specific genre.</p>
+        <p><strong>Protected</strong>: Yes, requires a valid JWT.</p>
+        <h4 id="get-director-information"><code>4. Get Director Information</code></h4>
+        <p><strong><code>GET /movies/directors/:directorName</code></strong></p>
+        <p><strong>Description</strong>: Retrieves information about a specific director.</p>
+        <p><strong>Protected</strong>: Yes, requires a valid JWT.</p>
+        <h3 id="favorite-movies">Favorite Movies</h3>
+        <h4 id="add-movie-to-favorites"><code>1. Add Movie to Favorites</code></h4>
+        <p><strong><code>POST /users/:Username/movies/:MovieID</code></strong></p>
+        <p><strong>Description</strong>: Adds a movie to the user’s list of favorite movies.</p>
+        <p><strong>Protected</strong>: Yes, requires a valid JWT.</p>
+        <h4 id="remove-movie-from-favorites"><code>2. Remove Movie from Favorites</code></h4>
+        <p><strong><code>DELETE /users/:Username/movies/:MovieID</code></strong></p>
+        <p><strong>Description</strong>: Removes a movie from the user’s list of favorite movies.</p>
+        <p><strong>Protected</strong>: Yes, requires a valid JWT.</p>
+        <hr>
+        <h2 id="cors-1">CORS</h2>
+        <p>The API restricts access to specified origins. The allowed origins are defined in the allowedOrigins array:
         </p>
-        <h2>Current development phase - Backend</h2>
-        <p>In the current development phase, the backend side of the application is created with the following
-            technologies and tools: <br>
-            Node.js and Express for the Rest API, <br>
-            MongoDB for building the non-relational database, <br>
-            Mongoose for modeling the business logic.
+        <pre class=" language-jspn"><code class="prism  language-jspn">
+let allowedOrigins = [
 
-        </p>
+'http://localhost:4200',
 
-        <h2> REST API “kraftFlix”</h2>
-        <h3>Supported Requests</h3>
-        <table class="table table-success table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Business Logic</th>
-                    <th scope="col">URL</th>
-                    <th scope="col">HTTP Method</th>
-                    <th scope="col">Request body data format</th>
-                    <th scope="col">Response body data format</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- MOVIE  ************************************************************* -->
-                <!-- LIST of all Movies -->
-                <tr>
-                    <td>Get all movies</td>
-                    <td>/movies</td>
-                    <td>GET</td>
-                    <td>None</td>
-                    <td>An array of JSON objects holding data about all the movies in the database</td>
-                </tr>
-                <!-- MOVIE data -->
-                <tr>
-                    <td>Get data about a single movie by title</td>
-                    <td>/movies/:movieTitle</td>
-                    <td>GET</td>
-                    <td>None</td>
-                    <td>A JSON object holding data about the requested movie like this: <br><br>
-                        {<br>
-                        "Genre": {<br>
-                        "Name": "Science Fiction",<br>
-                        "Description": "Movies that explore speculative or futuristic concepts."<br>
-                        },<br>
-                        "Director": {<br>
-                        "Name": "Christopher Nolan",<br>
-                        "Bio": "Christopher Nolan is a British-American film director, producer, and screenwriter."<br>
-                        },<br>
-                        "Actors": [],<br>
-                        "_id": "6629095e6e3b378ee9117b85",<br>
-                        "Title": "Inception",<br>
-                        "Description": "A thief who enters the dreams of others to steal their secrets.",<br>
-                        "Imageurl": "https://example.com/inception.jpg",<br>
-                        "Featured": true<br>
-                        }<br>
-                    </td>
-                </tr>
-                <!-- GENRE data -->
-                <tr>
-                    <td>Get data about a genre by name</td>
-                    <td>/movies/genres/:genreName</td>
-                    <td>GET</td>
-                    <td>None</td>
-                    <td> A JSON object holding data about a requested genre like this: <br><br>
-                        { <br>
-                        Name: " Western ", <br>
-                        Description: " Should contain numerous scenes and/or a narrative where the portrayal is similar
-                        to that of frontier life in the American West during 1600s to contemporary times. " <br>
-                        }
-                    </td>
-                </tr>
-                <!-- DIRECTOR data -->
-                <tr>
-                    <td>Get data about a director by name</td>
-                    <td>/movies/directors/:directorName </td>
-                    <td>GET</td>
-                    <td>None</td>
-                    <td>A JSON object holding data about the requested director like this: <br><br>
-                        {<br>
-                        "Name": "Francis Ford Coppola",<br>
-                        "Bio": "Francis Ford Coppola is an American film director, producer, and screenwriter."<br>
-                        }<br>
-                    </td>
-                </tr>
-                <!-- USERS  ************************************************************* -->
+'http://localhost:8080',
 
-                <!-- LIST of all USERS -->
-                <tr>
-                    <td>Get ALL users</td>
-                    <td>/users </td>
-                    <td>GET</td>
-                    <td>None</td>
-                    <td> A JSON object holding data about all users <br>
-                        Example: <br>
-                        {
-                        "_id": "662941f5ca83a0f7ed117b80",
-                        "Username": "johnny_d",
-                        "Password": "pwd_1234",
-                        "Email": "john.doe@example.com",
-                        "Birthdate": "1990-05-15T00:00:00.000Z",
-                        "FavoriteMovies": []
-                        }, <br>
-                        {
-                        "_id": "662941f5ca83a0f7ed117b81",
-                        "Username": "jane_s",
-                        "Password": "securepass321",
-                        "Birthdate": "1985-11-20T00:00:00.000Z",
-                        "Email": "jane.smith@example.com",
-                        "FavoriteMovies": []
-                        },
+...
 
-                    </td>
-                </tr>
-                <!-- Data of single USERS -->
-                <tr>
-                    <td>Get user data by username</td>
-                    <td>/users/:Username </td>
-                    <td>GET</td>
-                    <td>None</td>
-                    <td> A JSON object holding data about a single users <br>
-                        Example: <br>
-                        {<br>
-                        "_id": "662941f5ca83a0f7ed117b80",<br>
-                        "Username": "johnny_d",<br>
-                        "Password": "pwd_1234",<br>
-                        "Email": "john.doe@example.com",<br>
-                        "Birthdate": "1990-05-15T00:00:00.000Z",<br>
-                        "FavoriteMovies": []<br>
-                        }, <br>
-                    </td>
-                </tr>
-                <!-- USER REGISTER -->
-                <tr>
-                    <td>Register a new user</td>
-                    <td>/users </td>
-                    <td>POST</td>
-                    <td>A JSON object holding data about the user. The entry of Username Password and Email is
-                        mandatory. <br><br>
-                        Example:<br>
-                        {<br>
-                        "Username": "Ole Muster", <br>
-                        "Password": "sddsfhk",<br>
-                        "Email": "ole.muster@gmail.com",<br>
-                        "Birthdate":"1997-07-09"<br>
-                        }
-                    </td>
-                    <td>A JSON object holding data about the user that was added, including an automatically
-                        generated<br><br>
-                        Example:<br>
-                        {<br>
-                        "Username": "Ole Muster",<br>
-                        "Password": "sddsfhk",<br>
-                        "Email": "ole.muster@gmail.com",<br>
-                        "Birthdate": "1997-07-09T00:00:00.000Z",<br>
-                        "FavoriteMovies": [],<br>
-                        "_id": "66297d82166200db30c72e07",<br>
-                        }
-                    </td>
-                </tr>
-                <!-- USER LOGIN  -->
-                <tr>
-                    <td>User Login</td>
-                    <td>/login </td>
-                    <td>POST</td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-                <!-- ADDING MOVIE to FAVORITE MOVIES-->
-                <tr>
-                    <td>Adding a movie to a user's favorites Movies</td>
-                    <td>/users/:Username/movies/:MovieID</td>
-                    <td>POST</td>
-                    <td>None</td>
-                    <td> A text message indicating whether the movie has been successfully added to the user's list of
-                        favorite movies with an updated list of favorite movies. <br>
-                    </td>
-                </tr>
-                <!-- UPDATE -->
-                <tr>
-                    <td>Update user data by username</td>
-                    <td>/users/:Username </td>
-                    <td>PUT</td>
-                    <td>A JSON object holding data about the user to add, structured as follows: <br> <br>
-                        { <br>
-                        Username: String,<br>
-                        Password: String, <br>
-                        Email: String,<br>
-                        Birth-date: Date <br>
-                        } <br>
-                        Example:<br>
-                        {<br>
-                        "Username": "Ole Muster",<br>
-                        "Password": "sddsfhk",<br>
-                        "Email": "ole.muster@gmail.com",<br>
-                        "Birthdate": "1997-07-09T",<br>
-                        }
+];
 
-                    </td>
-                    <td>A JSON object holding data about the user that was added, including an ID: <br> <br>
-                        Example:<br>
-                        {<br>
-                        "Username": "Ole Muster",<br>
-                        "Password": "sddsfhk",<br>
-                        "Email": "ole.muster@gmail.com",<br>
-                        "Birthdate": "1997-07-09T00:00:00.000Z",<br>
-                        "FavoriteMovies": [],<br>
-                        "_id": "662a0274e48055466d70729f"<br>
-                        }
-                    </td>
-                </tr>
-                <!-- DELETE USER-->
-                <tr>
-                    <td>Delete existing user by username</td>
-                    <td>/users/:Username</td>
-                    <td>DELETE</td>
-                    <td>None</td>
-                    <td> A confirmation that the user has been deleted </td>
-                </tr>
+</code></pre>
+        <hr>
+        <h2 id="database">Database</h2>
+        <p>MongoDB is used as the database to store user and movie data.</p>
+        <h3 id="mongoose-models">Mongoose Models</h3>
+        <h4 id="movie"><code>Movie</code></h4>
+        <ul>
+            <li>
+                <p><strong>Title</strong>: (String, required)</p>
+            </li>
+            <li>
+                <p><strong>Description</strong>: (String, required)</p>
+            </li>
+            <li>
+                <p><strong>Genre</strong>: (Object, with Name and Description)</p>
+            </li>
+            <li>
+                <p><strong>Director</strong>: (Object, with Name and Bio)</p>
+            </li>
+            <li>
+                <p><strong>Actors</strong>: (Array of Strings)</p>
+            </li>
+            <li>
+                <p><strong>ImageUrl</strong>: (String)</p>
+            </li>
+            <li>
+                <p><strong>Featured</strong>: (Boolean)</p>
+            </li>
+        </ul>
+        <h4 id="user"><code>User</code></h4>
+        <ul>
+            <li>
+                <p><strong>Username</strong>: (String, required)</p>
+            </li>
+            <li>
+                <p><strong>Password</strong>: (String, required, stored as a hashed value)</p>
+            </li>
+            <li>
+                <p><strong>Email</strong>: (String, required)</p>
+            </li>
+            <li>
+                <p><strong>Birthdate</strong>: (Date)</p>
+            </li>
+            <li>
+                <p><strong>FavoriteMovies</strong>: (Array of Movie ObjectIds, references Movie model)</p>
+            </li>
+        </ul>
+        <hr>
+        <h2 id="deployment">Deployment</h2>
+        <p>The API is deployed to <a href="https://www.heroku.com/">Heroku</a></p>
+        <hr>
+        <h2 id="installation-and-setup">Installation and Setup</h2>
+        <h3 id="prerequisites">Prerequisites</h3>
+        <ul>
+            <li>
+                <p><a href="https://nodejs.org/en">Node.js</a> and <a href="https://docs.npmjs.com/">npm</a> installed.
+                </p>
+            </li>
+            <li>
+                <p><a href="https://www.mongodb.com/">MongoDB</a> database instance available.</p>
+            </li>
+        </ul>
+        <h3 id="steps-to-install-the-project">Steps to Install the Project</h3>
+        <h4 id="clone-the-repository"><code>1. Clone the Repository</code></h4>
+        <pre class=" language-bash"><code class="prism  language-bash">
+<span class="token function">git</span>  clone  https://github.com/TK1893/kraftFlix.git
 
-                <!-- DELETING MOVIE from FAVORITEMOVIES-->
-                <tr>
-                    <td>Deleting a movie from a user's favorites list</td>
-                    <td>/users/:Username/movies/:MovieID</td>
-                    <td>DELETE</td>
-                    <td>None</td>
-                    <td> A text message indicating whether the film has been successfully deleted from the user's list
-                        of favorite films
-                    </td>
-                </tr>
+  
 
-            </tbody>
-        </table>
+</code></pre>
+        <h4 id="open-the-project-folder"><code>2. Open the Project Folder</code></h4>
+        <pre class=" language-bash"><code class="prism  language-bash">
+<span class="token function">cd</span>  movie_api
 
+</code></pre>
+        <h4 id="install-dependencies"><code>3. Install Dependencies</code></h4>
+        <pre class=" language-bash"><code class="prism  language-bash">
+<span class="token function">npm</span>  <span class="token function">install</span>
+
+</code></pre>
+        <hr>
+        <h2 id="license">License</h2>
+        <p>This project is open-source under the MIT License.</p>
+        <hr>
+        <h2 id="author">Author</h2>
+        <p>Developed by Tobias Kraft as a part of an API development project for managing movie data and user
+            information.<code>enter code here</code></p>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>
