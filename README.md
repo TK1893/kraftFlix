@@ -132,7 +132,7 @@ Here are the primary API endpoints for this application:
 }
 ```
 
-#### 2. User Login
+#### `2. User Login`
 
 **POST /login**  
 **Description**: Authenticates the user and returns a JWT for access to protected routes.  
@@ -145,19 +145,19 @@ Here are the primary API endpoints for this application:
 }
 ```
 
-#### 3. Get All Users
+#### `3. Get All Users`
 
 **GET /users**  
  **Description**: Retrieves a list of all registered users.  
  **Protected**: Yes, requires a valid JWT.
 
-#### 4. Get User by Username
+#### `4. Get User by Username`
 
 **GET /users/:Username**  
 **Description**: Retrieves detailed information about a specific user by username.  
 **Protected**: Yes, requires a valid JWT.
 
-#### 5. Update User Information
+#### `5. Update User Information`
 
 **PUT /users/:Username**  
 **Description**: Updates the user’s details.  
@@ -173,7 +173,7 @@ Here are the primary API endpoints for this application:
 }
 ```
 
-#### 6. Delete User
+#### `6. Delete User`
 
 **DELETE /users/:Username**  
 **Description**: Removes a user from the database.  
@@ -181,25 +181,25 @@ Here are the primary API endpoints for this application:
 
 ### Movies
 
-#### 1. Get All Movies
+#### `1. Get All Movies`
 
 **GET /movies**  
 **Description**: Retrieves a list of all movies in the database.  
 **Protected**: Yes, requires a valid JWT.
 
-#### 2. Get Movie by Title
+#### `2. Get Movie by Title`
 
 **GET /movies/:Title**  
 **Description**: Retrieves information about a specific movie by title.  
 **Protected**: Yes, requires a valid JWT.
 
-#### 3. Get Genre Information
+#### `3. Get Genre Information`
 
 **GET /movies/genres/:genreName**  
 **Description**: Retrieves details about a specific genre.  
 **Protected**: Yes, requires a valid JWT.
 
-#### 4. Get Director Information
+#### `4. Get Director Information`
 
 **GET /movies/directors/:directorName**  
 **Description**: Retrieves information about a specific director.  
@@ -207,13 +207,13 @@ Here are the primary API endpoints for this application:
 
 ### Favorite Movies
 
-#### 1. Add Movie to Favorites
+#### `1. Add Movie to Favorites`
 
 **POST /users/:Username/movies/:MovieID**  
 **Description**: Adds a movie to the user’s list of favorite movies.  
 **Protected**: Yes, requires a valid JWT.
 
-#### 2. Remove Movie from Favorites
+#### `2. Remove Movie from Favorites`
 
 **DELETE /users/:Username/movies/:MovieID**  
 **Description**: Removes a movie from the user’s list of favorite movies.  
