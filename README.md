@@ -21,7 +21,7 @@ This is a RESTful API application created with Node.js and Express that allows u
 
 The following technologies and packages were used to build this API:
 
-`**Node.js**` - JavaScript runtime environment for server-side applications.
+**`Node.js`** - JavaScript runtime environment for server-side applications.
 
 **Express** - Web framework for Node.js.
 
