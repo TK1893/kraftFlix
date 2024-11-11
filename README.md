@@ -117,7 +117,7 @@ Here are the primary API endpoints for this application:
 
 ### User Management
 
-#### 1. Register a New User
+#### `1. Register a New User`
 
 **POST /users**  
 **Description**: Registers a new user with the provided information.  
