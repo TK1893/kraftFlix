@@ -1,4 +1,4 @@
-# Movie API (Kraftflix API)
+# Kraftflix Movie API
 
 This is a RESTful API application created with Node.js and Express that allows users to create and manage an account, browse a selection of movies, and save favorite movies to their profile. This API is protected by JWT-based authentication, and data is securely stored in a MongoDB database.
 
